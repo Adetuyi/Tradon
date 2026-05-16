@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tradon · F0 UI v2</title>
+<!-- F0 UI, full-fidelity. Static, no external scripts. Tokens = brand-spec.md (Field Green). -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --g-50:#ECF3EE;--g-100:#D7E6DC;--g-200:#AECDBA;--g-400:#4F9168;
+    --g-600:#1B5E3A;--g-700:#14422C;--g-900:#0F3322;
+    --paper:#F4F2EC;--surface:#FFFFFF;--surface-2:#FAF8F2;
+    --border:#E4E1D6;--border-strong:#D5D1C2;
+    --ink:#16241B;--text:#2C3A30;--muted:#6C7A6F;--faint:#94A099;
+    --positive:#2F9E5E;--negative:#C0492F;--signal:#C9742B;
+    --on-primary:#F2F6EF;--on-deep:#CFE0D2;
+    --fd:'Schibsted Grotesk',ui-sans-serif,system-ui,sans-serif;
+    --fb:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+    --fm:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+    --r-card:14px;--r-ctl:9px;--r-pill:999px;
+    --sh:0 1px 2px rgba(15,51,34,.04),0 10px 30px -18px rgba(15,51,34,.22);
+    --sh-lift:0 2px 4px rgba(15,51,34,.05),0 18px 44px -22px rgba(15,51,34,.28);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#E7E4DB;color:var(--text);font-family:var(--fb);-webkit-font-smoothing:antialiased}
+  body{padding:42px 36px 80px}
+  .wrap{max-width:1320px;margin:0 auto}
+  .ph1{font-family:var(--fd);font-size:26px;font-weight:700;letter-spacing:-.025em;color:var(--ink)}
+  .psub{margin-top:8px;font-size:13.5px;color:var(--muted);max-width:760px;line-height:1.55}
+  .stack{display:flex;flex-direction:column;gap:34px;margin-top:32px}
+  .tile-h{display:flex;align-items:baseline;gap:9px;margin-bottom:11px}
+  .tile-h .ix{font-family:var(--fm);font-size:11px;color:#8a8a80}
+  .tile-h .nm{font-family:var(--fd);font-size:16px;font-weight:700;color:var(--ink)}
+  .tile-h .tg{font-size:11.5px;color:var(--muted)}
+  .screen{border-radius:16px;overflow:hidden;border:1px solid var(--border-strong);box-shadow:var(--sh-lift);background:var(--surface)}
+
+  .wm{font-family:var(--fd);font-weight:700;letter-spacing:-.03em}
+  .wm i{color:var(--signal);font-style:normal}
+  .btn{height:46px;border-radius:var(--r-ctl);display:flex;align-items:center;justify-content:center;
+       font-weight:600;font-family:var(--fd);font-size:14px;border:1px solid transparent;cursor:default;gap:8px}
+  .btn-pri{background:var(--g-600);color:var(--on-primary)}
+  .btn-sec{background:var(--surface);color:var(--ink);border-color:var(--border-strong)}
+  .btn-ghost{background:transparent;color:var(--g-600)}
+  .btn-danger{background:var(--negative);color:#fff}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+  .input{height:46px;border:1px solid var(--border-strong);border-radius:var(--r-ctl);background:var(--surface);
+         display:flex;align-items:center;padding:0 14px;font-size:14px;color:var(--faint)}
+  .input.foc{border-color:var(--g-600);box-shadow:0 0 0 3px var(--g-50)}
+  .input.afx{justify-content:space-between}
+  .input .sfx{font-family:var(--fm);font-size:12.5px;color:var(--muted)}
+  .link{color:var(--signal);font-weight:500}
+
+  /* ---------- Split auth ---------- */
+  .split{display:flex;min-height:540px}
+  .brandpane{width:42%;background:var(--g-900);color:var(--on-deep);padding:44px 42px;display:flex;
+             flex-direction:column;position:relative;overflow:hidden}
+  .brandpane::before{content:"";position:absolute;inset:0;
+    background:radial-gradient(120% 90% at 85% 8%,rgba(79,145,104,.30),transparent 60%);}
+  .brandpane::after{content:"";position:absolute;inset:0;opacity:.05;
+    background-image:linear-gradient(var(--on-deep) 1px,transparent 1px),linear-gradient(90deg,var(--on-deep) 1px,transparent 1px);
+    background-size:34px 34px;}
+  .bp-in{position:relative;z-index:1;display:flex;flex-direction:column;height:100%}
+  .bp-wm{font-size:22px;color:var(--on-primary)}
+  .bp-lead{font-family:var(--fd);font-size:30px;font-weight:700;line-height:1.22;letter-spacing:-.02em;
+           color:#fff;margin-top:auto}
+  .bp-sub{font-size:13.5px;line-height:1.65;margin-top:16px;color:var(--on-deep);max-width:330px}
+  .bp-ft{margin-top:34px;display:flex;gap:22px;font-size:11px;font-family:var(--fm);color:#7FA088;
+         letter-spacing:.04em;border-top:1px solid rgba(255,255,255,.10);padding-top:18px}
+  .formpane{flex:1;background:var(--surface);display:flex;align-items:center;justify-content:center;padding:44px}
+  .form-in{width:340px}
+  .form-in h2{font-family:var(--fd);font-size:24px;color:var(--ink);font-weight:700;letter-spacing:-.02em}
+  .form-in .ctx{font-size:13px;color:var(--muted);margin:7px 0 28px}
+  .form-in .ctx b{color:var(--ink)}
+  .seg{display:flex;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-pill);
+       padding:4px;margin:18px 0 24px}
+  .seg span{flex:1;text-align:center;font-size:12.5px;padding:8px 0;border-radius:var(--r-pill);color:var(--muted)}
+  .seg span.on{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  .rowflds{display:flex;gap:14px}
+  .rowflds .field{flex:1}
+  .between{display:flex;justify-content:space-between;align-items:center;margin:-4px 0 22px}
+  .between .rem{font-size:12px;color:var(--muted)}
+  .form-foot{font-size:11.5px;color:var(--faint);margin-top:22px;line-height:1.55;text-align:center}
+
+  /* ---------- App shell ---------- */
+  .shell{display:flex;height:560px;background:var(--paper);color:var(--ink)}
+  .sb{width:218px;background:var(--g-900);color:#9FBBA9;padding:22px 14px;display:flex;flex-direction:column;flex-shrink:0}
+  .sb .w{font-size:20px;padding:0 8px 24px;color:var(--on-primary)}
+  .nav{display:flex;align-items:center;gap:12px;padding:9px 11px;border-radius:8px;font-size:13px;margin-bottom:2px;color:#9FBBA9}
+  .nav svg{width:16px;height:16px;flex-shrink:0;opacity:.85}
+  .nav.on{background:var(--g-700);color:var(--on-primary);font-weight:600}
+  .sb-ft{margin-top:auto;font-size:11px;color:#6E8A78;padding:14px 8px 0;border-top:1px solid rgba(255,255,255,.08)}
+  .main{flex:1;display:flex;flex-direction:column;min-width:0}
+  .tb{height:62px;border-bottom:1px solid var(--border);display:flex;align-items:center;
+      justify-content:space-between;padding:0 26px;background:var(--surface)}
+  .crumb{font-size:13px;color:var(--muted)}
+  .crumb b{color:var(--ink);font-family:var(--fd);font-weight:600}
+  .tb-r{display:flex;align-items:center;gap:14px}
+  .pill{display:flex;align-items:center;gap:8px;background:var(--surface-2);border:1px solid var(--border);
+        border-radius:var(--r-pill);padding:8px 14px;font-size:12px;color:var(--muted)}
+  .rolebadge{font-size:11px;font-family:var(--fm);background:var(--g-50);color:var(--g-700);
+             border:1px solid var(--g-200);padding:4px 10px;border-radius:var(--r-pill)}
+  .av{width:34px;height:34px;border-radius:50%;background:var(--g-600);color:var(--on-primary);
+      display:flex;align-items:center;justify-content:center;font-weight:600;font-family:var(--fd);font-size:12px}
+  .content{flex:1;padding:42px;background:var(--paper);display:flex;align-items:center;justify-content:center}
+  .ready{width:560px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);
+         padding:34px 36px;box-shadow:var(--sh)}
+  .ready .eyebrow{font-family:var(--fm);font-size:11px;letter-spacing:.14em;color:var(--signal)}
+  .ready h3{font-family:var(--fd);font-size:22px;color:var(--ink);font-weight:700;letter-spacing:-.02em;margin:9px 0 7px}
+  .ready p{font-size:13px;color:var(--muted);line-height:1.6;max-width:430px}
+  .checks{margin-top:24px;display:grid;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+  .ck{display:flex;align-items:center;gap:12px;background:var(--surface);padding:13px 16px;font-size:13px}
+  .ck svg{width:17px;height:17px;color:var(--positive);flex-shrink:0}
+  .ck .lab{color:var(--ink)}
+  .ck .val{margin-left:auto;font-family:var(--fm);font-size:12px;color:var(--muted)}
+
+  /* ---------- System pages ---------- */
+  .sys{position:relative;min-height:480px;background:var(--paper);display:flex;align-items:center;overflow:hidden}
+  .sys .mark{position:absolute;right:-60px;bottom:-90px;font-family:var(--fd);font-weight:700;
+             font-size:300px;color:var(--ink);opacity:.035;letter-spacing:-.04em;user-select:none}
+  .sys .rule{position:absolute;left:0;top:0;height:4px;width:100%;background:var(--g-600)}
+  .sys.deny .rule{background:var(--negative)}
+  .sys-in{position:relative;z-index:1;padding:0 64px;max-width:620px}
+  .sys-in .w{font-size:20px;color:var(--ink);margin-bottom:40px}
+  .sys-in .code{font-family:var(--fm);font-size:12px;color:var(--g-600);letter-spacing:.16em}
+  .sys.deny .sys-in .code{color:var(--negative)}
+  .sys-in h2{font-family:var(--fd);font-size:38px;color:var(--ink);font-weight:700;letter-spacing:-.025em;margin:12px 0 14px;line-height:1.12}
+  .sys-in p{font-size:14px;color:var(--muted);line-height:1.7;max-width:460px}
+  .sys-in p code,.sys-in .chip{font-family:var(--fm);font-size:12.5px;background:var(--surface);
+        padding:2px 8px;border-radius:5px;border:1px solid var(--border);color:var(--ink)}
+  .sys-in .acts{margin-top:30px;display:flex;gap:12px}
+  .sys-in .btn{padding:0 24px;width:auto;height:44px}
+
+  /* ---------- Platform admin (light, inverted shell) ---------- */
+  .admin{display:flex;height:600px;background:var(--paper);color:var(--ink)}
+  .adm-sb{width:214px;background:var(--surface);border-right:1px solid var(--border);padding:22px 14px;
+          display:flex;flex-direction:column;flex-shrink:0}
+  .adm-sb .w{font-size:20px;color:var(--ink);padding:0 8px}
+  .adm-sb .plat{display:inline-block;font-size:10px;font-family:var(--fm);color:var(--signal);
+                letter-spacing:.16em;border:1px solid var(--g-200);background:var(--g-50);
+                padding:3px 9px;border-radius:var(--r-pill);margin:10px 8px 24px}
+  .adm-nav{display:flex;align-items:center;gap:11px;font-size:13px;padding:9px 11px;border-radius:8px;
+           margin-bottom:2px;color:var(--muted)}
+  .adm-nav svg{width:15px;height:15px;opacity:.8}
+  .adm-nav.on{background:var(--g-50);color:var(--g-700);font-weight:600}
+  .adm-sb .who{margin-top:auto;font-size:11px;font-family:var(--fm);color:var(--faint);
+               padding:14px 8px 0;border-top:1px solid var(--border)}
+  .adm-main{flex:1;padding:30px 38px;overflow:hidden}
+  .adm-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px}
+  .adm-main h2{font-family:var(--fd);font-size:22px;color:var(--ink);font-weight:700;letter-spacing:-.02em}
+  .adm-main .sub{font-size:13px;color:var(--muted);margin:6px 0 26px;max-width:520px;line-height:1.6}
+  .adm-cols{display:flex;gap:26px}
+  .card-form{flex:0 0 440px;background:var(--surface);border:1px solid var(--border);
+             border-radius:var(--r-card);padding:26px;box-shadow:var(--sh)}
+  .card-form .grp{font-family:var(--fm);font-size:10.5px;letter-spacing:.1em;color:var(--faint);
+                  text-transform:uppercase;margin:4px 0 14px}
+  .card-form .grp.sp{margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
+  .disabled{opacity:.55}
+  .tag{display:inline-block;font-size:10px;font-family:var(--fm);color:var(--muted);
+       border:1px solid var(--border);border-radius:var(--r-pill);padding:2px 8px;margin-left:8px}
+  .adm-side{flex:1;min-width:0}
+  .adm-side .h{font-family:var(--fd);font-size:13px;font-weight:600;color:var(--ink);margin-bottom:14px}
+  .tbl{border:1px solid var(--border);border-radius:var(--r-card);overflow:hidden;background:var(--surface)}
+  .tr{display:grid;grid-template-columns:1.5fr 1fr 1fr;font-size:12.5px}
+  .th{background:var(--surface-2);color:var(--muted);font-weight:600;font-size:10.5px;
+      text-transform:uppercase;letter-spacing:.05em}
+  .tr>div{padding:13px 16px;border-bottom:1px solid var(--border)}
+  .tr:last-child>div{border-bottom:none}
+  .tr .mono{font-family:var(--fm);color:var(--muted)}
+
+  /* ---------- Component foundation ---------- */
+  .kit{background:var(--surface);padding:30px 32px}
+  .kit-row{margin-bottom:26px}
+  .kit-row>.lab{font-family:var(--fm);font-size:11px;color:var(--muted);text-transform:uppercase;
+                letter-spacing:.07em;margin-bottom:14px}
+  .kit-btns{display:flex;gap:12px;flex-wrap:wrap}
+  .kit-btns .btn{padding:0 22px}
+  .badges{display:flex;gap:8px;flex-wrap:wrap}
+  .badge{font-size:11px;font-family:var(--fm);padding:4px 11px;border-radius:var(--r-pill);border:1px solid}
+  .b-owner{background:var(--g-600);color:#fff;border-color:var(--g-600)}
+  .b-role{background:var(--g-50);color:var(--g-700);border-color:var(--g-200)}
+  .b-pos{background:#E7F4EC;color:#1E7A45;border-color:#B6DEC6}
+  .b-neg{background:#F7E7E3;color:#9A3522;border-color:#E4BCB1}
+  .b-sig{background:#F7ECDF;color:#9A571A;border-color:#E6CBA7}
+  .alerts{display:flex;flex-direction:column;gap:10px;max-width:560px}
+  .alert{display:flex;gap:10px;align-items:flex-start;padding:13px 15px;border-radius:var(--r-ctl);font-size:12.5px;border:1px solid}
+  .al-pos{background:#EAF5EE;border-color:#BBDFC9;color:#1E7A45}
+  .al-neg{background:#F8E9E5;border-color:#E4BCB1;color:#9A3522}
+  .al-sig{background:#F8EEE1;border-color:#E6CBA7;color:#8A4F18}
+  .ftr{margin-top:36px;font-size:12.5px;color:var(--muted);line-height:1.6}
+  .ftr code{font-family:var(--fm);background:var(--surface);padding:1px 6px;border-radius:4px;border:1px solid var(--border)}
+  @media(max-width:1000px){.split,.adm-cols{flex-direction:column}.brandpane{width:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="ph1">Tradon — F0 UI · v2 (full fidelity)</div>
+  <div class="psub">The flagged surfaces rebuilt to a finished bar: split-screen auth, a confident “Foundation ready” state, composed system pages, and a light premium platform console (inverted shell — no black). Still only F0’s surface; still only <code style="font-family:var(--fm);font-size:12px">brand-spec.md</code> tokens.</div>
+
+  <div class="stack">
+
+    <!-- 1 · STAFF LOGIN -->
+    <div>
+      <div class="tile-h"><span class="ix">01</span><span class="nm">Staff login</span><span class="tg">· Supabase Auth · split-screen</span></div>
+      <div class="screen"><div class="split">
+        <div class="brandpane"><div class="bp-in">
+          <div class="wm bp-wm">Tradon<i>.</i></div>
+          <div class="bp-lead">Move stock,<br>not spreadsheets.</div>
+          <div class="bp-sub">The distribution control room for Chi Distribution Ltd — orders, distributors, credit and collections in one place.</div>
+          <div class="bp-ft"><span>MULTI-TENANT</span><span>RLS-ISOLATED</span><span>NDPA-READY</span></div>
+        </div></div>
+        <div class="formpane"><div class="form-in">
+          <h2>Sign in</h2>
+          <div class="ctx">to the <b>Chi</b> staff workspace</div>
+          <div class="field"><label>Work email</label><div class="input">oluwaseyi@chi.com</div></div>
+          <div class="field" style="margin-bottom:8px"><label>Password</label><div class="input foc">••••••••••••</div></div>
+          <div class="between"><span class="rem">Keep me signed in</span><span class="link" style="font-size:12.5px">Forgot password?</span></div>
+          <div class="btn btn-pri">Sign in</div>
+          <div class="form-foot">Staff accounts are provisioned by your administrator.</div>
+        </div></div>
+      </div></div>
+    </div>
+
+    <!-- 2 · SHOP LOGIN -->
+    <div>
+      <div class="tile-h"><span class="ix">02</span><span class="nm">Shop login</span><span class="tg">· app-managed · per-tenant identity</span></div>
+      <div class="screen"><div class="split">
+        <div class="brandpane"><div class="bp-in">
+          <div class="wm bp-wm" style="color:#fff">Chi Retail</div>
+          <div class="bp-lead">Stock your shelves<br>before they’re empty.</div>
+          <div class="bp-sub">Order from Chi Distribution directly, track deliveries, and manage your wallet and credit.</div>
+          <div class="bp-ft"><span>FAST DELIVERY</span><span>WALLET &amp; CREDIT</span></div>
+        </div></div>
+        <div class="formpane"><div class="form-in">
+          <div class="seg"><span class="on">Sign in</span><span>Create account</span></div>
+          <div class="field"><label>Email</label><div class="input">you@example.com</div></div>
+          <div class="field" style="margin-bottom:8px"><label>Password</label><div class="input">••••••••••</div></div>
+          <div class="between"><span class="rem">Remember me</span><span class="link" style="font-size:12.5px">Forgot password?</span></div>
+          <div class="btn btn-pri">Sign in</div>
+          <div class="form-foot">Powered by <span class="wm" style="font-size:11.5px">Tradon<i>.</i></span> · this account is specific to Chi Retail</div>
+        </div></div>
+      </div></div>
+    </div>
+
+    <!-- 3 · SHOP SIGNUP -->
+    <div>
+      <div class="tile-h"><span class="ix">03</span><span class="nm">Shop sign up</span><span class="tg">· per-tenant · NG defaults · consent versioned</span></div>
+      <div class="screen"><div class="split">
+        <div class="brandpane"><div class="bp-in">
+          <div class="wm bp-wm" style="color:#fff">Chi Retail</div>
+          <div class="bp-lead">Create your<br>store account.</div>
+          <div class="bp-sub">One account for ordering, deliveries, wallet and credit with Chi Distribution.</div>
+          <div class="bp-ft"><span>2 MIN SETUP</span><span>NO FEES</span></div>
+        </div></div>
+        <div class="formpane"><div class="form-in" style="width:360px">
+          <div class="seg"><span>Sign in</span><span class="on">Create account</span></div>
+          <div class="field"><label>Full name</label><div class="input">Adaeze Okafor</div></div>
+          <div class="rowflds">
+            <div class="field"><label>Email</label><div class="input">you@example.com</div></div>
+            <div class="field"><label>Phone</label><div class="input afx"><span>801 234 5678</span><span class="sfx">+234</span></div></div>
+          </div>
+          <div class="field" style="margin-bottom:10px"><label>Password</label><div class="input">••••••••••</div></div>
+          <div class="btn btn-pri">Create account</div>
+          <div class="form-foot">By continuing you accept the Terms &amp; Privacy Policy — the accepted version is recorded.</div>
+        </div></div>
+      </div></div>
+    </div>
+
+    <!-- 4 · APP SHELL + FOUNDATION READY -->
+    <div>
+      <div class="tile-h"><span class="ix">04</span><span class="nm">App shell · Foundation ready</span><span class="tg">· inherited everywhere · confident, not empty</span></div>
+      <div class="screen"><div class="shell">
+        <div class="sb">
+          <div class="wm w">Tradon<i>.</i></div>
+          <div class="nav on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="7" r="3.5"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/></svg>Distributors</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/></svg>Products</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.4 12h11"/></svg>Orders</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="2.4"/></svg>Finance</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 5-7"/></svg>Reporting</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 12 12 4H4v8l8 8Z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>Promos</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Billing &amp; Pricing</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="7" r="3.5"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/><path d="M19 8v6M22 11h-6"/></svg>Users &amp; Permissions</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8 2 2 0 1 1-2.8 2.8 1.6 1.6 0 0 0-2.7 1.1 2 2 0 1 1-4 0 1.6 1.6 0 0 0-2.7-1.1 2 2 0 1 1-2.8-2.8A1.6 1.6 0 0 0 4.6 14a2 2 0 1 1 0-4 1.6 1.6 0 0 0 1.1-2.7 2 2 0 1 1 2.8-2.8A1.6 1.6 0 0 0 11 4.6a2 2 0 1 1 4 0 1.6 1.6 0 0 0 2.7 1.1 2 2 0 1 1 2.8 2.8 1.6 1.6 0 0 0 1 2.9Z"/></svg>Settings</div>
+          <div class="sb-ft">chi.tradon.app · Lagos · NGN</div>
+        </div>
+        <div class="main">
+          <div class="tb">
+            <div class="crumb"><b>Chi Distribution Ltd</b> &nbsp;·&nbsp; Dashboard</div>
+            <div class="tb-r">
+              <div class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>Search</div>
+              <span class="rolebadge">role · Owner</span>
+              <div class="av">OA</div>
+            </div>
+          </div>
+          <div class="content">
+            <div class="ready">
+              <div class="eyebrow">PLATFORM FOUNDATION · F0</div>
+              <h3>Your workspace is live.</h3>
+              <p>Tenancy, authentication, role-based access and data isolation are running. Feature modules arrive in the next milestones — the groundwork they stand on is done.</p>
+              <div class="checks">
+                <div class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span class="lab">Tenant resolved</span><span class="val">chi.tradon.app</span></div>
+                <div class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span class="lab">Signed in as</span><span class="val">Owner · oluwaseyi@chi.com</span></div>
+                <div class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span class="lab">Data isolation</span><span class="val">RLS enforced</span></div>
+                <div class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span class="lab">Audit trail</span><span class="val">recording</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 5 · TENANT NOT FOUND -->
+    <div>
+      <div class="tile-h"><span class="ix">05</span><span class="nm">Tenant not found / inactive</span><span class="tg">· host resolution miss · composed</span></div>
+      <div class="screen"><div class="sys">
+        <div class="rule"></div><div class="mark">T.</div>
+        <div class="sys-in">
+          <div class="wm w">Tradon<i>.</i></div>
+          <div class="code">NO ACTIVE WORKSPACE</div>
+          <h2>There’s nothing at<br>this address — yet.</h2>
+          <p><span class="chip">acme.tradon.app</span> isn’t an active Tradon workspace. The business may not have launched, or the link may be mistyped.</p>
+          <div class="acts">
+            <div class="btn btn-pri">Visit tradon.app</div>
+            <div class="btn btn-sec">Create a workspace</div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 6 · 403 -->
+    <div>
+      <div class="tile-h"><span class="ix">06</span><span class="nm">No permission (403)</span><span class="tg">· RBAC denial · helpful, not punitive</span></div>
+      <div class="screen"><div class="sys deny">
+        <div class="rule"></div><div class="mark">403</div>
+        <div class="sys-in">
+          <div class="wm w">Tradon<i>.</i></div>
+          <div class="code">ACCESS RESTRICTED</div>
+          <h2>This area is outside<br>your permissions.</h2>
+          <p>Your role <span class="chip">Sales</span> doesn’t include <span class="chip">finance.read</span>. An <b>Owner</b> or <b>Admin</b> can grant it in Users&nbsp;&amp;&nbsp;Permissions.</p>
+          <div class="acts">
+            <div class="btn btn-pri">Back to dashboard</div>
+            <div class="btn btn-sec">Request access</div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 7 · PLATFORM ADMIN -->
+    <div>
+      <div class="tile-h"><span class="ix">07</span><span class="nm">Platform admin — provision tenant</span><span class="tg">· app.tradon.app · light premium console · inverted shell</span></div>
+      <div class="screen"><div class="admin">
+        <div class="adm-sb">
+          <div class="wm w">Tradon<i>.</i></div>
+          <div class="plat">PLATFORM</div>
+          <div class="adm-nav on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/></svg>Tenants</div>
+          <div class="adm-nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>Domains</div>
+          <div class="adm-nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 3v5h5M7 3h8l5 5v13H7z"/><path d="M10 13h6M10 17h6"/></svg>Audit log</div>
+          <div class="adm-nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="7" r="3.5"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/><path d="M19 8v6M22 11h-6"/></svg>Platform staff</div>
+          <div class="who">superadmin@tradon.app</div>
+        </div>
+        <div class="adm-main">
+          <div class="adm-top"><h2>Provision a tenant</h2><span class="rolebadge">Superadmin</span></div>
+          <div class="sub">Creates the workspace, seeds the Owner account, default roles, settings, region and the RLS tenant context.</div>
+          <div class="adm-cols">
+            <div class="card-form">
+              <div class="grp">Business</div>
+              <div class="field"><label>Business name</label><div class="input">Chi Distribution Ltd</div></div>
+              <div class="field"><label>Subdomain</label><div class="input afx foc"><span>chi</span><span class="sfx">.tradon.app</span></div></div>
+              <div class="grp sp">Owner &amp; locale</div>
+              <div class="field"><label>Owner email</label><div class="input">owner@chi.com</div></div>
+              <div class="rowflds">
+                <div class="field"><label>Region</label><div class="input afx"><span>Nigeria</span><span class="sfx">NG</span></div></div>
+                <div class="field"><label>Currency</label><div class="input afx"><span>Naira</span><span class="sfx">NGN</span></div></div>
+              </div>
+              <div class="field disabled" style="margin-bottom:20px"><label>Plan <span class="tag">billing · later milestone</span></label><div class="input">—</div></div>
+              <div class="btn btn-pri">Provision tenant</div>
+            </div>
+            <div class="adm-side">
+              <div class="h">Active tenants</div>
+              <div class="tbl">
+                <div class="tr th"><div>Workspace</div><div>Region</div><div>Created</div></div>
+                <div class="tr"><div>chi.tradon.app</div><div>NG</div><div class="mono">2026-05-16</div></div>
+                <div class="tr"><div>lagos-foods.tradon.app</div><div>NG</div><div class="mono">2026-05-14</div></div>
+                <div class="tr"><div>verdant.tradon.app</div><div>NG</div><div class="mono">2026-05-09</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 8 · COMPONENT FOUNDATION -->
+    <div>
+      <div class="tile-h"><span class="ix">08</span><span class="nm">Component foundation</span><span class="tg">· token-driven Tailwind primitives</span></div>
+      <div class="screen"><div class="kit">
+        <div class="kit-row">
+          <div class="lab">Buttons</div>
+          <div class="kit-btns">
+            <div class="btn btn-pri">Primary</div><div class="btn btn-sec">Secondary</div>
+            <div class="btn btn-ghost">Ghost</div><div class="btn btn-danger">Danger</div>
+          </div>
+        </div>
+        <div class="kit-row">
+          <div class="lab">Form controls</div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;max-width:680px">
+            <div class="field" style="flex:1;min-width:190px;margin:0"><label>Text input</label><div class="input">Placeholder</div></div>
+            <div class="field" style="flex:1;min-width:190px;margin:0"><label>Focused</label><div class="input foc">Typing…</div></div>
+            <div class="field" style="flex:1;min-width:190px;margin:0"><label>With suffix</label><div class="input afx"><span>chi</span><span class="sfx">.tradon.app</span></div></div>
+          </div>
+        </div>
+        <div class="kit-row">
+          <div class="lab">Role &amp; status badges</div>
+          <div class="badges">
+            <span class="badge b-owner">Owner</span><span class="badge b-role">Admin</span>
+            <span class="badge b-role">Finance</span><span class="badge b-role">Sales</span>
+            <span class="badge b-role">Field rep</span><span class="badge b-role">Viewer</span>
+            <span class="badge b-pos">Active</span><span class="badge b-neg">Suspended</span><span class="badge b-sig">Pending</span>
+          </div>
+        </div>
+        <div class="kit-row" style="margin-bottom:0">
+          <div class="lab">Alerts</div>
+          <div class="alerts">
+            <div class="alert al-pos">Tenant <b style="margin:0 3px">chi</b> provisioned — Owner invite sent.</div>
+            <div class="alert al-neg">2 tenant-owned tables are missing an RLS policy — deploy blocked.</div>
+            <div class="alert al-sig">Hellofield is above 90% of its credit limit.</div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+  </div>
+
+  <div class="ftr">
+    Source: <code>design/f0-skeleton/Tradon F0 — UI v2.html</code> · Static HTML/CSS, no external scripts · Tokens from <code>design/brand-spec.md</code>.
+    Approve → recorded as the F0 UI reference, then the F0 implementation plan (backend TDD + these as Tailwind components).
+  </div>
+</div>
+</body>
+</html>

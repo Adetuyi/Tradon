@@ -190,6 +190,33 @@ Built test-first (TDD skill) at implementation time.
 | Platform staff | Permission-aware via shared `can()` layer, distinct namespace |
 | Field rep | First-class tenant role; features later |
 | Compliance | All 6 structural primitives in F0; features deferred |
+| UI scope | Thin UI skeleton **in scope**, design-first (approved v2) |
+
+---
+
+## 10a. UI Scope (added 2026-05-16)
+
+F0 includes a thin, full-fidelity UI skeleton — designed and approved before
+implementation, built with Tailwind from `design/brand-spec.md` tokens.
+
+**Approved reference:** `design/f0-skeleton/Tradon F0 — UI v2.html`
+**Brand tokens:** `design/brand-spec.md` (Field Green)
+
+In-scope screens (no feature pages):
+
+1. Staff login (Supabase Auth) — split-screen
+2. Shop login (app-managed, per-tenant) — split-screen
+3. Shop signup — split-screen, NG defaults, consent-version capture
+4. Authenticated app shell (sidebar + topbar + content frame) — inherited by
+   every later sub-project; F0 renders a "Foundation ready" state
+5. Tenant-not-found / inactive page
+6. 403 no-permission page (names the missing permission key)
+7. Platform-admin provision-tenant console (light, inverted shell)
+8. Tailwind component foundation (buttons, inputs, role/status badges, alerts)
+
+Implementation contract: tokens → CSS custom properties → `tailwind.config`
+theme; components use semantic classes (`bg-primary`, `text-muted`), never raw
+hex. Backend built test-first; these screens built to match the approved v2.
 
 ---
 
