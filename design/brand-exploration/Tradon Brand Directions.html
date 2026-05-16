@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tradon · Brand Directions</title>
+<!-- Static, no-JS, no external scripts. Fonts = progressive enhancement w/ fallbacks.
+     Same signature screen (CEO Morning Brief) + auth card in 3 themes via CSS vars. -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --pf-display:'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
+    --pf-serif:'Newsreader', Georgia, 'Times New Roman', serif;
+    --pf-space:'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+    --pf-body:'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --pf-mono:'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#E9E7E0;color:#1a1a1a;font-family:var(--pf-body)}
+  body{padding:36px 28px 70px;-webkit-font-smoothing:antialiased}
+  .head{max-width:1740px;margin:0 auto 24px}
+  .head h1{font-family:var(--pf-display);font-size:25px;font-weight:700;letter-spacing:-.02em;color:#16170f}
+  .head p{margin-top:7px;font-size:13.5px;color:#5c5c54;max-width:760px;line-height:1.55}
+  .canvas{display:flex;gap:24px;max-width:1740px;margin:0 auto;align-items:flex-start;flex-wrap:nowrap}
+  @media(max-width:1500px){.canvas{flex-wrap:wrap}.col{flex:1 1 520px!important}}
+  .col{flex:1 1 0;min-width:0}
+  .col-h{display:flex;align-items:baseline;gap:9px;margin-bottom:10px}
+  .col-h .ix{font-family:var(--pf-mono);font-size:11px;color:#8a8a80}
+  .col-h .nm{font-family:var(--pf-display);font-size:17px;font-weight:700;color:#16170f}
+  .col-h .tg{font-size:11.5px;color:#6f6f66}
+  .spec{background:#fff;border:1px solid #ddd9cd;border-radius:11px;padding:12px;margin-bottom:14px}
+  .sws{display:flex;gap:7px;margin-bottom:10px}
+  .sw{flex:1;height:38px;border-radius:6px;position:relative;border:1px solid rgba(0,0,0,.06)}
+  .sw span{position:absolute;bottom:4px;left:6px;font-family:var(--pf-mono);font-size:8.5px}
+  .sm{font-size:11px;color:#57574e;line-height:1.5}
+  .sm b{color:#2a2a22;font-weight:600}
+
+  /* ---- Theme tokens ---- */
+  .theme{ --bg:#fff;--sf:#fff;--ink:#111;--mut:#777;--pri:#222;--prid:#111;--onp:#fff;
+          --acc:#c80;--pos:#2a6;--neg:#c33;--bd:#e5e5e5;--sbg:#222;--sbi:#ccc;--sba:#333;
+          --fd:var(--pf-display);--fb:var(--pf-body);--fm:var(--pf-mono) }
+  .t-field{ --bg:#F4F2EC;--sf:#FFFFFF;--ink:#16241B;--mut:#6C7A6F;--pri:#1B5E3A;--prid:#123524;
+            --onp:#F2F6EF;--acc:#C9742B;--pos:#2F9E5E;--neg:#C0492F;--bd:#E4E1D6;
+            --sbg:#143D28;--sbi:#CFE0D2;--sba:#1F6B43;--fd:var(--pf-display) }
+  .t-ledger{ --bg:#F3EFE7;--sf:#FBF9F3;--ink:#171310;--mut:#736A5D;--pri:#171310;--prid:#171310;
+             --onp:#F6EFE0;--acc:#BE7C18;--pos:#3F6B43;--neg:#B23B2E;--bd:#E0D8C7;
+             --sbg:#FBF9F3;--sbi:#5C5446;--sba:#171310;--fd:var(--pf-serif) }
+  .t-signal{ --bg:#F4F6F8;--sf:#FFFFFF;--ink:#15212C;--mut:#5F7184;--pri:#1E2A44;--prid:#161F33;
+             --onp:#E9F6F4;--acc:#0FB5A6;--pos:#0FB5A6;--neg:#E0683D;--bd:#E2E8EE;
+             --sbg:#161F33;--sbi:#9FB0C7;--sba:#26324F;--fd:var(--pf-space) }
+
+  /* ---- Dashboard frame ---- */
+  .frame{border-radius:14px;overflow:hidden;border:1px solid rgba(0,0,0,.1);
+         box-shadow:0 16px 38px -22px rgba(0,0,0,.3);background:var(--bg)}
+  .dash{display:flex;width:100%;background:var(--bg);color:var(--ink);font-family:var(--fb)}
+  .sb{width:150px;background:var(--sbg);color:var(--sbi);padding:16px 11px;display:flex;flex-direction:column;flex-shrink:0}
+  .logo{font-family:var(--fd);font-weight:700;font-size:17px;letter-spacing:-.03em;padding:0 6px 16px}
+  .logo.dk{color:var(--ink)} .logo.lt{color:var(--onp)}
+  .logo i{color:var(--acc);font-style:normal}
+  .nav{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:7px;font-size:11px;margin-bottom:2px}
+  .nav svg{width:14px;height:14px;flex-shrink:0}
+  .nav.on{font-weight:600}
+  .sb-ft{margin-top:auto;font-size:9px;opacity:.65;padding:0 6px}
+  .main{flex:1;padding:14px 16px;min-width:0}
+  .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .kick{font-family:var(--fm);font-size:9px;color:var(--mut);letter-spacing:.04em}
+  .h2{font-family:var(--fd);font-size:16px;font-weight:700;letter-spacing:-.02em;margin-top:2px}
+  .av{width:26px;height:26px;border-radius:50%;background:var(--pri);color:var(--onp);
+      display:flex;align-items:center;justify-content:center;font-weight:600;font-family:var(--fd);font-size:10px}
+  .ai{border-radius:11px;padding:13px 15px;margin-bottom:13px;display:flex;gap:11px;color:var(--onp)}
+  .ai .sp{color:var(--acc);flex-shrink:0;margin-top:1px}
+  .ai .sp svg{width:15px;height:15px}
+  .ai h4{font-family:var(--fd);font-weight:600;font-size:11.5px;margin-bottom:4px}
+  .ai p{font-size:10px;line-height:1.55;opacity:.92}
+  .kpis{display:flex;gap:9px;margin-bottom:12px}
+  .kpi{flex:1;background:var(--sf);border:1px solid var(--bd);border-radius:9px;padding:11px 12px}
+  .kpi .l{font-size:8.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--mut)}
+  .kpi .v{font-family:var(--fd);font-size:19px;font-weight:700;color:var(--ink);margin-top:5px;letter-spacing:-.02em}
+  .kpi .d{font-family:var(--fm);font-size:9px;margin-top:4px;color:var(--pos)}
+  .row{display:flex;gap:9px;margin-bottom:12px}
+  .pnl{background:var(--sf);border:1px solid var(--bd);border-radius:9px;padding:13px}
+  .pnl .ph{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px}
+  .pnl .pt{font-family:var(--fd);font-size:11.5px;font-weight:600;color:var(--ink)}
+  .pnl .ps{font-size:9px;color:var(--mut)}
+  .area{width:100%;height:96px;display:block}
+  .legend{display:grid;gap:5px}
+  .lg{display:flex;align-items:center;gap:6px;font-size:9.5px;color:var(--mut)}
+  .lg b{width:8px;height:8px;border-radius:2px}
+  .lg .n{color:var(--ink);font-weight:500}
+  .lg .p{font-family:var(--fm);margin-left:auto}
+  .bar{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+  .bar .rg{width:46px;font-size:9.5px;color:var(--ink)}
+  .bar .tk{flex:1;height:7px;background:var(--bg);border-radius:4px;overflow:hidden}
+  .bar .fl{height:100%;background:var(--pri);border-radius:4px}
+  .bar .vn{font-family:var(--fm);font-size:9px;color:var(--mut);width:22px;text-align:right}
+  .big{font-family:var(--fd);font-size:30px;font-weight:700;color:var(--ink);letter-spacing:-.03em}
+  .big s{font-size:16px;color:var(--mut);text-decoration:none}
+  /* ---- Auth ---- */
+  .auth{background:var(--bg);display:flex;align-items:center;justify-content:center;padding:26px 0}
+  .card{width:280px;background:var(--sf);border:1px solid var(--bd);border-radius:13px;padding:24px;
+        box-shadow:0 16px 34px -24px rgba(0,0,0,.3)}
+  .card .lg2{font-family:var(--fd);font-weight:700;font-size:18px;color:var(--ink);letter-spacing:-.03em}
+  .card .lg2 i{color:var(--acc);font-style:normal}
+  .card .su{font-size:10.5px;color:var(--mut);margin:3px 0 17px}
+  .card .su b{color:var(--ink)}
+  .fld{margin-bottom:9px}
+  .fld .fl2{font-size:9.5px;color:var(--mut);margin-bottom:4px}
+  .fld .ip{height:31px;border:1px solid var(--bd);border-radius:7px;background:var(--bg)}
+  .btn{height:34px;background:var(--pri);color:var(--onp);border-radius:7px;display:flex;
+       align-items:center;justify-content:center;font-weight:600;font-family:var(--fd);font-size:12px;margin-top:5px}
+  .fp{text-align:center;font-size:10px;color:var(--acc);margin-top:11px;font-weight:500}
+  .ftr{max-width:1740px;margin:30px auto 0;font-size:12px;color:#6f6f66;line-height:1.6}
+  .ftr code{font-family:var(--pf-mono);background:#fff;padding:1px 6px;border-radius:4px;border:1px solid #ddd9cd}
+</style>
+</head>
+<body>
+<div class="head">
+  <h1>Tradon — Brand Directions</h1>
+  <p>Same signature screen (CEO Morning Brief) + auth card, rendered three ways so colour is judged in context. Pick one, mix (“Field Green palette + Signal type”), or tell me what to push further. Figures mirror the original screenshot — illustrative, not invented.</p>
+</div>
+
+<div class="canvas">
+
+  <!-- ============ COLUMN 1 · FIELD GREEN ============ -->
+  <div class="col">
+    <div class="col-h"><span class="ix">01</span><span class="nm">Field Green</span><span class="tg">· evolve the reference · safe</span></div>
+    <div class="spec theme t-field">
+      <div class="sws">
+        <div class="sw" style="background:#143D28"><span style="color:rgba(255,255,255,.8)">Deep #143D28</span></div>
+        <div class="sw" style="background:#1B5E3A"><span style="color:rgba(255,255,255,.8)">Primary #1B5E3A</span></div>
+        <div class="sw" style="background:#F4F2EC"><span style="color:rgba(0,0,0,.55)">Paper #F4F2EC</span></div>
+        <div class="sw" style="background:#C9742B"><span style="color:rgba(255,255,255,.85)">Signal #C9742B</span></div>
+      </div>
+      <div class="sm"><b>School</b> · Information architecture &nbsp;|&nbsp; <b>Type</b> · Schibsted Grotesk / IBM Plex Sans / Mono</div>
+    </div>
+    <div class="frame theme t-field">
+      <div class="dash">
+        <div class="sb">
+          <div class="logo lt">Tradon<i>.</i></div>
+          <div class="nav on" style="background:var(--sba);color:var(--onp)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="7" r="3.5"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/></svg>Distributors</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/></svg>Products</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.4 12h11"/></svg>Orders</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="2.4"/></svg>Finance</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 5-7"/></svg>Reporting</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 12 12 4H4v8l8 8Z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>Promos</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Billing</div>
+          <div class="sb-ft">chi.tradon.app</div>
+        </div>
+        <div class="main">
+          <div class="top">
+            <div><div class="kick">SATURDAY · 16 MAY 2026</div><div class="h2">CEO Morning Brief</div></div>
+            <div class="av">OA</div>
+          </div>
+          <div class="ai" style="background:var(--prid)">
+            <span class="sp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3.4"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2 2M16.4 16.4l2 2M18.4 5.6l-2 2M7.6 16.4l-2 2"/></svg></span>
+            <div><h4>Good morning, Oluwaseyi.</h4><p>Yesterday Chi shipped <b>1,247 orders</b> across <b>18 states</b> for <b>₦43.2M</b> — <b>187%</b> of target. 23 distributors active; Hellofield &amp; Smatta are 90%+ of credit limit — worth a call before Monday.</p></div>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><div class="l">Orders</div><div class="v">1,247</div><div class="d">▲ 12.4% wk</div></div>
+            <div class="kpi"><div class="l">Revenue</div><div class="v">₦43.2M</div><div class="d">▲ 8.1% wk</div></div>
+            <div class="kpi"><div class="l">Distributors</div><div class="v">23</div><div class="d">▲ 2 onboarding</div></div>
+            <div class="kpi"><div class="l">Target</div><div class="v">187%</div><div class="d">▲ ahead</div></div>
+          </div>
+          <div class="row">
+            <div class="pnl" style="flex:1.6">
+              <div class="ph"><span class="pt">Revenue trend</span><span class="ps">last 12 weeks</span></div>
+              <svg class="area" viewBox="0 0 560 96" preserveAspectRatio="none"><defs><linearGradient id="gf" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1B5E3A" stop-opacity=".22"/><stop offset="100%" stop-color="#1B5E3A" stop-opacity="0"/></linearGradient></defs><polygon points="0,96 0,72 51,60 102,64 153,44 204,52 255,30 306,38 357,18 408,26 459,8 510,14 560,4 560,96" fill="url(#gf)"/><polyline points="0,72 51,60 102,64 153,44 204,52 255,30 306,38 357,18 408,26 459,8 510,14 560,4" fill="none" stroke="#1B5E3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="pnl" style="flex:1">
+              <div class="ph"><span class="pt">Channel mix</span><span class="ps">by revenue</span></div>
+              <div style="display:flex;align-items:center;gap:13px">
+                <div style="width:74px;height:74px;border-radius:50%;flex-shrink:0;background:conic-gradient(#1B5E3A 0 46%,#C9742B 46% 74%,#2F9E5E 74% 90%,#6C7A6F 90% 100%);position:relative"><div style="position:absolute;inset:13px;border-radius:50%;background:var(--sf)"></div></div>
+                <div class="legend">
+                  <div class="lg"><b style="background:#1B5E3A"></b><span class="n">Distributors</span><span class="p">46%</span></div>
+                  <div class="lg"><b style="background:#C9742B"></b><span class="n">Direct shop</span><span class="p">28%</span></div>
+                  <div class="lg"><b style="background:#2F9E5E"></b><span class="n">Filed</span><span class="p">16%</span></div>
+                  <div class="lg"><b style="background:#6C7A6F"></b><span class="n">Other</span><span class="p">10%</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-bottom:0">
+            <div class="pnl" style="flex:1.4">
+              <div class="ph"><span class="pt">Regional performance</span><span class="ps">orders index</span></div>
+              <div class="bar"><span class="rg">Lagos</span><span class="tk"><span class="fl" style="width:92%"></span></span><span class="vn">92</span></div>
+              <div class="bar"><span class="rg">Anambra</span><span class="tk"><span class="fl" style="width:78%"></span></span><span class="vn">78</span></div>
+              <div class="bar"><span class="rg">Kano</span><span class="tk"><span class="fl" style="width:64%"></span></span><span class="vn">64</span></div>
+              <div class="bar" style="margin-bottom:0"><span class="rg">Rivers</span><span class="tk"><span class="fl" style="width:57%"></span></span><span class="vn">57</span></div>
+            </div>
+            <div class="pnl" style="flex:1">
+              <div class="ph"><span class="pt">Collection efficiency</span></div>
+              <div class="big">91<s>%</s></div>
+              <div style="font-size:9.5px;color:var(--mut);margin-top:3px">₦4.1M overdue · 30-day</div>
+              <div style="margin-top:11px;height:7px;background:var(--bg);border-radius:4px;overflow:hidden"><div style="width:91%;height:100%;background:var(--pos);border-radius:4px"></div></div>
+              <div style="margin-top:10px;font-size:9.5px;color:var(--acc);font-weight:600">2 over limit →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="auth">
+        <div class="card">
+          <div class="lg2">Tradon<i>.</i></div>
+          <div class="su">Sign in to <b>chi.tradon.app</b></div>
+          <div class="fld"><div class="fl2">Work email</div><div class="ip"></div></div>
+          <div class="fld"><div class="fl2">Password</div><div class="ip"></div></div>
+          <div class="btn">Sign in</div>
+          <div class="fp">Forgot password?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ COLUMN 2 · LEDGER ============ -->
+  <div class="col">
+    <div class="col-h"><span class="ix">02</span><span class="nm">Ledger</span><span class="tg">· against the green · editorial fintech</span></div>
+    <div class="spec theme t-ledger">
+      <div class="sws">
+        <div class="sw" style="background:#171310"><span style="color:rgba(255,255,255,.8)">Ink #171310</span></div>
+        <div class="sw" style="background:#BE7C18"><span style="color:rgba(255,255,255,.85)">Amber #BE7C18</span></div>
+        <div class="sw" style="background:#F3EFE7"><span style="color:rgba(0,0,0,.55)">Paper #F3EFE7</span></div>
+        <div class="sw" style="background:#B23B2E"><span style="color:rgba(255,255,255,.85)">Alert #B23B2E</span></div>
+      </div>
+      <div class="sm"><b>School</b> · Editorial / financial authority &nbsp;|&nbsp; <b>Type</b> · Newsreader / IBM Plex Sans / Mono</div>
+    </div>
+    <div class="frame theme t-ledger">
+      <div class="dash">
+        <div class="sb" style="border-right:1px solid var(--bd)">
+          <div class="logo dk">Tradon<i>.</i></div>
+          <div class="nav on" style="background:var(--sba);color:#fff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="7" r="3.5"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/></svg>Distributors</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/></svg>Products</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.4 12h11"/></svg>Orders</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="2.4"/></svg>Finance</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 5-7"/></svg>Reporting</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 12 12 4H4v8l8 8Z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>Promos</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Billing</div>
+          <div class="sb-ft">chi.tradon.app</div>
+        </div>
+        <div class="main">
+          <div class="top">
+            <div><div class="kick">SATURDAY · 16 MAY 2026</div><div class="h2">CEO Morning Brief</div></div>
+            <div class="av">OA</div>
+          </div>
+          <div class="ai" style="background:var(--prid)">
+            <span class="sp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3.4"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2 2M16.4 16.4l2 2M18.4 5.6l-2 2M7.6 16.4l-2 2"/></svg></span>
+            <div><h4>Good morning, Oluwaseyi.</h4><p>Yesterday Chi shipped <b>1,247 orders</b> across <b>18 states</b> for <b>₦43.2M</b> — <b>187%</b> of target. 23 distributors active; Hellofield &amp; Smatta are 90%+ of credit limit — worth a call before Monday.</p></div>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><div class="l">Orders</div><div class="v">1,247</div><div class="d">▲ 12.4% wk</div></div>
+            <div class="kpi"><div class="l">Revenue</div><div class="v">₦43.2M</div><div class="d">▲ 8.1% wk</div></div>
+            <div class="kpi"><div class="l">Distributors</div><div class="v">23</div><div class="d">▲ 2 onboarding</div></div>
+            <div class="kpi"><div class="l">Target</div><div class="v">187%</div><div class="d">▲ ahead</div></div>
+          </div>
+          <div class="row">
+            <div class="pnl" style="flex:1.6">
+              <div class="ph"><span class="pt">Revenue trend</span><span class="ps">last 12 weeks</span></div>
+              <svg class="area" viewBox="0 0 560 96" preserveAspectRatio="none"><defs><linearGradient id="gl" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#171310" stop-opacity=".16"/><stop offset="100%" stop-color="#171310" stop-opacity="0"/></linearGradient></defs><polygon points="0,96 0,72 51,60 102,64 153,44 204,52 255,30 306,38 357,18 408,26 459,8 510,14 560,4 560,96" fill="url(#gl)"/><polyline points="0,72 51,60 102,64 153,44 204,52 255,30 306,38 357,18 408,26 459,8 510,14 560,4" fill="none" stroke="#171310" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="pnl" style="flex:1">
+              <div class="ph"><span class="pt">Channel mix</span><span class="ps">by revenue</span></div>
+              <div style="display:flex;align-items:center;gap:13px">
+                <div style="width:74px;height:74px;border-radius:50%;flex-shrink:0;background:conic-gradient(#171310 0 46%,#BE7C18 46% 74%,#3F6B43 74% 90%,#C9BBA0 90% 100%);position:relative"><div style="position:absolute;inset:13px;border-radius:50%;background:var(--sf)"></div></div>
+                <div class="legend">
+                  <div class="lg"><b style="background:#171310"></b><span class="n">Distributors</span><span class="p">46%</span></div>
+                  <div class="lg"><b style="background:#BE7C18"></b><span class="n">Direct shop</span><span class="p">28%</span></div>
+                  <div class="lg"><b style="background:#3F6B43"></b><span class="n">Filed</span><span class="p">16%</span></div>
+                  <div class="lg"><b style="background:#C9BBA0"></b><span class="n">Other</span><span class="p">10%</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-bottom:0">
+            <div class="pnl" style="flex:1.4">
+              <div class="ph"><span class="pt">Regional performance</span><span class="ps">orders index</span></div>
+              <div class="bar"><span class="rg">Lagos</span><span class="tk"><span class="fl" style="width:92%"></span></span><span class="vn">92</span></div>
+              <div class="bar"><span class="rg">Anambra</span><span class="tk"><span class="fl" style="width:78%"></span></span><span class="vn">78</span></div>
+              <div class="bar"><span class="rg">Kano</span><span class="tk"><span class="fl" style="width:64%"></span></span><span class="vn">64</span></div>
+              <div class="bar" style="margin-bottom:0"><span class="rg">Rivers</span><span class="tk"><span class="fl" style="width:57%"></span></span><span class="vn">57</span></div>
+            </div>
+            <div class="pnl" style="flex:1">
+              <div class="ph"><span class="pt">Collection efficiency</span></div>
+              <div class="big">91<s>%</s></div>
+              <div style="font-size:9.5px;color:var(--mut);margin-top:3px">₦4.1M overdue · 30-day</div>
+              <div style="margin-top:11px;height:7px;background:var(--bg);border-radius:4px;overflow:hidden"><div style="width:91%;height:100%;background:var(--pos);border-radius:4px"></div></div>
+              <div style="margin-top:10px;font-size:9.5px;color:var(--acc);font-weight:600">2 over limit →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="auth">
+        <div class="card">
+          <div class="lg2">Tradon<i>.</i></div>
+          <div class="su">Sign in to <b>chi.tradon.app</b></div>
+          <div class="fld"><div class="fl2">Work email</div><div class="ip"></div></div>
+          <div class="fld"><div class="fl2">Password</div><div class="ip"></div></div>
+          <div class="btn">Sign in</div>
+          <div class="fp">Forgot password?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ COLUMN 3 · SIGNAL ============ -->
+  <div class="col">
+    <div class="col-h"><span class="ix">03</span><span class="nm">Signal</span><span class="tg">· against the green · modern platform</span></div>
+    <div class="spec theme t-signal">
+      <div class="sws">
+        <div class="sw" style="background:#161F33"><span style="color:rgba(255,255,255,.8)">Slate #161F33</span></div>
+        <div class="sw" style="background:#0FB5A6"><span style="color:rgba(255,255,255,.85)">Teal #0FB5A6</span></div>
+        <div class="sw" style="background:#F4F6F8"><span style="color:rgba(0,0,0,.55)">Mist #F4F6F8</span></div>
+        <div class="sw" style="background:#E0683D"><span style="color:rgba(255,255,255,.85)">Alert #E0683D</span></div>
+      </div>
+      <div class="sm"><b>School</b> · Modern minimalism &nbsp;|&nbsp; <b>Type</b> · Space Grotesk / IBM Plex Sans / Mono</div>
+    </div>
+    <div class="frame theme t-signal">
+      <div class="dash">
+        <div class="sb">
+          <div class="logo lt">Tradon<i>.</i></div>
+          <div class="nav on" style="background:var(--sba);color:var(--onp)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="7" r="3.5"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/></svg>Distributors</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/></svg>Products</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.4 12h11"/></svg>Orders</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="2.4"/></svg>Finance</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 5-7"/></svg>Reporting</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 12 12 4H4v8l8 8Z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>Promos</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Billing</div>
+          <div class="sb-ft">chi.tradon.app</div>
+        </div>
+        <div class="main">
+          <div class="top">
+            <div><div class="kick">SATURDAY · 16 MAY 2026</div><div class="h2">CEO Morning Brief</div></div>
+            <div class="av">OA</div>
+          </div>
+          <div class="ai" style="background:var(--prid)">
+            <span class="sp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3.4"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2 2M16.4 16.4l2 2M18.4 5.6l-2 2M7.6 16.4l-2 2"/></svg></span>
+            <div><h4>Good morning, Oluwaseyi.</h4><p>Yesterday Chi shipped <b>1,247 orders</b> across <b>18 states</b> for <b>₦43.2M</b> — <b>187%</b> of target. 23 distributors active; Hellofield &amp; Smatta are 90%+ of credit limit — worth a call before Monday.</p></div>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><div class="l">Orders</div><div class="v">1,247</div><div class="d">▲ 12.4% wk</div></div>
+            <div class="kpi"><div class="l">Revenue</div><div class="v">₦43.2M</div><div class="d">▲ 8.1% wk</div></div>
+            <div class="kpi"><div class="l">Distributors</div><div class="v">23</div><div class="d">▲ 2 onboarding</div></div>
+            <div class="kpi"><div class="l">Target</div><div class="v">187%</div><div class="d">▲ ahead</div></div>
+          </div>
+          <div class="row">
+            <div class="pnl" style="flex:1.6">
+              <div class="ph"><span class="pt">Revenue trend</span><span class="ps">last 12 weeks</span></div>
+              <svg class="area" viewBox="0 0 560 96" preserveAspectRatio="none"><defs><linearGradient id="gs" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0FB5A6" stop-opacity=".24"/><stop offset="100%" stop-color="#0FB5A6" stop-opacity="0"/></linearGradient></defs><polygon points="0,96 0,72 51,60 102,64 153,44 204,52 255,30 306,38 357,18 408,26 459,8 510,14 560,4 560,96" fill="url(#gs)"/><polyline points="0,72 51,60 102,64 153,44 204,52 255,30 306,38 357,18 408,26 459,8 510,14 560,4" fill="none" stroke="#0FB5A6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="pnl" style="flex:1">
+              <div class="ph"><span class="pt">Channel mix</span><span class="ps">by revenue</span></div>
+              <div style="display:flex;align-items:center;gap:13px">
+                <div style="width:74px;height:74px;border-radius:50%;flex-shrink:0;background:conic-gradient(#1E2A44 0 46%,#0FB5A6 46% 74%,#5F7184 74% 90%,#C2CCD6 90% 100%);position:relative"><div style="position:absolute;inset:13px;border-radius:50%;background:var(--sf)"></div></div>
+                <div class="legend">
+                  <div class="lg"><b style="background:#1E2A44"></b><span class="n">Distributors</span><span class="p">46%</span></div>
+                  <div class="lg"><b style="background:#0FB5A6"></b><span class="n">Direct shop</span><span class="p">28%</span></div>
+                  <div class="lg"><b style="background:#5F7184"></b><span class="n">Filed</span><span class="p">16%</span></div>
+                  <div class="lg"><b style="background:#C2CCD6"></b><span class="n">Other</span><span class="p">10%</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-bottom:0">
+            <div class="pnl" style="flex:1.4">
+              <div class="ph"><span class="pt">Regional performance</span><span class="ps">orders index</span></div>
+              <div class="bar"><span class="rg">Lagos</span><span class="tk"><span class="fl" style="width:92%"></span></span><span class="vn">92</span></div>
+              <div class="bar"><span class="rg">Anambra</span><span class="tk"><span class="fl" style="width:78%"></span></span><span class="vn">78</span></div>
+              <div class="bar"><span class="rg">Kano</span><span class="tk"><span class="fl" style="width:64%"></span></span><span class="vn">64</span></div>
+              <div class="bar" style="margin-bottom:0"><span class="rg">Rivers</span><span class="tk"><span class="fl" style="width:57%"></span></span><span class="vn">57</span></div>
+            </div>
+            <div class="pnl" style="flex:1">
+              <div class="ph"><span class="pt">Collection efficiency</span></div>
+              <div class="big">91<s>%</s></div>
+              <div style="font-size:9.5px;color:var(--mut);margin-top:3px">₦4.1M overdue · 30-day</div>
+              <div style="margin-top:11px;height:7px;background:var(--bg);border-radius:4px;overflow:hidden"><div style="width:91%;height:100%;background:var(--pos);border-radius:4px"></div></div>
+              <div style="margin-top:10px;font-size:9.5px;color:var(--acc);font-weight:600">2 over limit →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="auth">
+        <div class="card">
+          <div class="lg2">Tradon<i>.</i></div>
+          <div class="su">Sign in to <b>chi.tradon.app</b></div>
+          <div class="fld"><div class="fl2">Work email</div><div class="ip"></div></div>
+          <div class="fld"><div class="fl2">Password</div><div class="ip"></div></div>
+          <div class="btn">Sign in</div>
+          <div class="fp">Forgot password?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="ftr">
+  Source: <code>design/brand-exploration/Tradon Brand Directions.html</code> · Static HTML/CSS, no external scripts · Type via Google Fonts (graceful fallback) · Icons inline SVG.
+  After you pick: I lock the tokens into <code>brand-spec.md</code> and carry them into the F0 implementation plan.
+</div>
+
+</body>
+</html>
