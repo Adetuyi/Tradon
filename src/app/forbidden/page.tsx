@@ -45,6 +45,13 @@ export default function Forbidden() {
           >
             Back to dashboard
           </a>
+          <a
+            href="/request-access"
+            className="inline-flex h-11 px-6 rounded-ctl bg-surface text-ink
+              border border-hairline-strong font-display font-semibold text-sm items-center"
+          >
+            Request access
+          </a>
         </div>
       </div>
     </main>
