@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tradon · Brand System — Field Green</title>
+<!-- Refinement pass: exact token system + applied in context. Static, no external scripts. -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    /* ---------- Brand green ramp ---------- */
+    --g-50:#ECF3EE;  --g-100:#D7E6DC; --g-200:#AECDBA; --g-400:#4F9168;
+    --g-600:#1B5E3A; --g-700:#14422C; --g-900:#0F3322;
+    /* ---------- Warm neutral ramp ---------- */
+    --paper:#F4F2EC; --surface:#FFFFFF; --surface-2:#FAF8F2;
+    --border:#E4E1D6; --border-strong:#D5D1C2;
+    --ink:#16241B; --text:#2C3A30; --muted:#6C7A6F; --faint:#94A099;
+    /* ---------- Semantic ---------- */
+    --positive:#2F9E5E; --negative:#C0492F; --signal:#C9742B;
+    --on-primary:#F2F6EF; --on-deep:#DCE8DD;
+    /* ---------- Type ---------- */
+    --fd:'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
+    --fb:'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --fm:'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    /* ---------- Foundations ---------- */
+    --r-card:12px; --r-ctl:8px; --r-pill:999px;
+    --sh-card:0 1px 2px rgba(15,51,34,.04), 0 8px 24px -16px rgba(15,51,34,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--paper);color:var(--text);font-family:var(--fb);-webkit-font-smoothing:antialiased}
+  body{padding:44px 40px 80px}
+  .wrap{max-width:1320px;margin:0 auto}
+  .ph1{font-family:var(--fd);font-size:27px;font-weight:700;letter-spacing:-.025em;color:var(--ink)}
+  .psub{margin-top:8px;font-size:14px;color:var(--muted);max-width:680px;line-height:1.55}
+  .sec{margin-top:38px}
+  .sec-h{font-family:var(--fd);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+         padding-bottom:10px;border-bottom:1px solid var(--border);margin-bottom:18px}
+  /* swatches */
+  .ramp{display:flex;gap:10px;flex-wrap:wrap}
+  .chip{width:148px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface)}
+  .chip .sw{height:64px}
+  .chip .meta{padding:9px 10px}
+  .chip .tk{font-family:var(--fm);font-size:11px;color:var(--ink);font-weight:500}
+  .chip .hex{font-family:var(--fm);font-size:10.5px;color:var(--muted);margin-top:1px}
+  .chip .use{font-size:10.5px;color:var(--faint);margin-top:5px;line-height:1.4}
+  /* type specimen */
+  .type-grid{display:grid;grid-template-columns:140px 1fr;gap:14px 26px;align-items:baseline}
+  .type-grid .k{font-family:var(--fm);font-size:11px;color:var(--muted);padding-top:6px}
+  .d-xl{font-family:var(--fd);font-size:34px;font-weight:700;letter-spacing:-.03em;color:var(--ink)}
+  .d-lg{font-family:var(--fd);font-size:23px;font-weight:700;letter-spacing:-.02em;color:var(--ink)}
+  .d-h3{font-family:var(--fd);font-size:15px;font-weight:600;color:var(--ink)}
+  .b-bd{font-size:14px;color:var(--text);line-height:1.6;max-width:560px}
+  .b-sm{font-size:12px;color:var(--muted)}
+  .m-dat{font-family:var(--fm);font-size:15px;color:var(--ink);font-weight:500}
+  /* foundations */
+  .found{display:flex;gap:30px;flex-wrap:wrap}
+  .fbox{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);padding:16px 18px}
+  .fbox .lab{font-family:var(--fm);font-size:11px;color:var(--muted);margin-bottom:10px}
+  .demo-r{display:flex;gap:12px;align-items:flex-end}
+  .demo-r div{background:var(--g-100);border:1px solid var(--g-200);width:54px;height:40px}
+  .ev1{width:90px;height:54px;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:var(--sh-card)}
+  .accent-note{font-size:12.5px;color:var(--text);line-height:1.6;max-width:560px}
+  .accent-note b{color:var(--signal)}
+  /* ---------- Applied dashboard ---------- */
+  .frame{margin-top:18px;border-radius:16px;overflow:hidden;border:1px solid var(--border-strong);box-shadow:var(--sh-card);background:var(--paper)}
+  .dash{display:flex;background:var(--paper);color:var(--ink);font-family:var(--fb)}
+  .sb{width:206px;background:var(--g-900);color:#B9CFBF;padding:20px 14px;display:flex;flex-direction:column;flex-shrink:0}
+  .logo{font-family:var(--fd);font-weight:700;font-size:20px;letter-spacing:-.03em;color:var(--on-primary);padding:0 8px 22px}
+  .logo i{color:var(--signal);font-style:normal}
+  .nav{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:8px;font-size:13px;margin-bottom:2px}
+  .nav svg{width:16px;height:16px;flex-shrink:0;opacity:.9}
+  .nav.on{background:var(--g-700);color:var(--on-primary);font-weight:600}
+  .sb-ft{margin-top:auto;font-size:11px;color:#7C9685;padding:0 8px}
+  .main{flex:1;padding:20px 26px;min-width:0}
+  .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .kick{font-family:var(--fm);font-size:11px;color:var(--muted);letter-spacing:.04em}
+  .h2{font-family:var(--fd);font-size:22px;font-weight:700;letter-spacing:-.02em;margin-top:3px;color:var(--ink)}
+  .pillbtn{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-pill);
+           padding:8px 14px;font-size:12.5px;color:var(--muted)}
+  .av{width:34px;height:34px;border-radius:50%;background:var(--g-600);color:var(--on-primary);
+      display:flex;align-items:center;justify-content:center;font-weight:600;font-family:var(--fd);font-size:13px}
+  .ai{background:var(--g-900);color:var(--on-deep);border-radius:14px;padding:18px 22px;margin-bottom:18px;display:flex;gap:15px}
+  .ai .sp{color:var(--signal);flex-shrink:0;margin-top:2px}
+  .ai h4{font-family:var(--fd);font-weight:600;font-size:15px;margin-bottom:5px;color:var(--on-primary)}
+  .ai p{font-size:13px;line-height:1.6;opacity:.92}
+  .ai b{color:#fff}
+  .kpis{display:flex;gap:14px;margin-bottom:16px}
+  .kpi{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);padding:15px 17px}
+  .kpi .l{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+  .kpi .v{font-family:var(--fd);font-size:26px;font-weight:700;color:var(--ink);margin-top:7px;letter-spacing:-.02em}
+  .kpi .d{font-family:var(--fm);font-size:11.5px;margin-top:5px;color:var(--positive)}
+  .row{display:flex;gap:14px;margin-bottom:16px}
+  .pnl{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);padding:18px}
+  .pnl .pnh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+  .pnl .pt{font-family:var(--fd);font-size:15px;font-weight:600;color:var(--ink)}
+  .pnl .ps{font-size:11.5px;color:var(--muted)}
+  .area{width:100%;height:140px;display:block}
+  .legend{display:grid;gap:8px}
+  .lg{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+  .lg b{width:9px;height:9px;border-radius:2px}
+  .lg .n{color:var(--ink);font-weight:500}
+  .lg .p{font-family:var(--fm);margin-left:auto}
+  .bar{display:flex;align-items:center;gap:12px;margin-bottom:11px}
+  .bar .rg{width:60px;font-size:12px;color:var(--ink)}
+  .bar .tk{flex:1;height:9px;background:var(--paper);border-radius:5px;overflow:hidden}
+  .bar .fl{height:100%;background:var(--g-600);border-radius:5px}
+  .bar .vn{font-family:var(--fm);font-size:11.5px;color:var(--muted);width:26px;text-align:right}
+  .big{font-family:var(--fd);font-size:40px;font-weight:700;color:var(--ink);letter-spacing:-.03em}
+  .big s{font-size:21px;color:var(--muted);text-decoration:none}
+  .auth{background:var(--paper);display:flex;align-items:center;justify-content:center;padding:34px 0;border-top:1px solid var(--border)}
+  .card{width:360px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:30px;box-shadow:var(--sh-card)}
+  .card .lg2{font-family:var(--fd);font-weight:700;font-size:22px;color:var(--ink);letter-spacing:-.03em}
+  .card .lg2 i{color:var(--signal);font-style:normal}
+  .card .su{font-size:13px;color:var(--muted);margin:4px 0 22px}
+  .card .su b{color:var(--ink)}
+  .fld{margin-bottom:12px}
+  .fld .fl2{font-size:11.5px;color:var(--muted);margin-bottom:5px}
+  .fld .ip{height:38px;border:1px solid var(--border);border-radius:var(--r-ctl);background:var(--surface-2)}
+  .btn{height:42px;background:var(--g-600);color:var(--on-primary);border-radius:var(--r-ctl);display:flex;
+       align-items:center;justify-content:center;font-weight:600;font-family:var(--fd);font-size:14px;margin-top:6px}
+  .fp{text-align:center;font-size:12px;color:var(--g-600);margin-top:14px;font-weight:500}
+  .ftr{margin-top:34px;font-size:12.5px;color:var(--muted);line-height:1.6}
+  .ftr code{font-family:var(--fm);background:var(--surface);padding:1px 6px;border-radius:4px;border:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="ph1">Tradon — Brand System · Field Green</div>
+  <div class="psub">Refinement pass: the exact tokens (greens, accent, full neutral + semantic ramp, type, foundations), then the same signature screen built using <em>only</em> these tokens. Approve this and it becomes <code style="font-family:var(--fm);font-size:12px">brand-spec.md</code>.</div>
+
+  <!-- COLOR -->
+  <div class="sec">
+    <div class="sec-h">Brand green</div>
+    <div class="ramp">
+      <div class="chip"><div class="sw" style="background:var(--g-50)"></div><div class="meta"><div class="tk">green-50</div><div class="hex">#ECF3EE</div><div class="use">tint surface, hover wash</div></div></div>
+      <div class="chip"><div class="sw" style="background:var(--g-100)"></div><div class="meta"><div class="tk">green-100</div><div class="hex">#D7E6DC</div><div class="use">subtle fills, chips</div></div></div>
+      <div class="chip"><div class="sw" style="background:var(--g-200)"></div><div class="meta"><div class="tk">green-200</div><div class="hex">#AECDBA</div><div class="use">borders on green</div></div></div>
+      <div class="chip"><div class="sw" style="background:var(--g-400)"></div><div class="meta"><div class="tk">green-400</div><div class="hex">#4F9168</div><div class="use">secondary marks</div></div></div>
+      <div class="chip"><div class="sw" style="background:var(--g-600)"></div><div class="meta"><div class="tk">green-600 ★</div><div class="hex">#1B5E3A</div><div class="use">PRIMARY · actions, brand</div></div></div>
+      <div class="chip"><div class="sw" style="background:var(--g-700)"></div><div class="meta"><div class="tk">green-700</div><div class="hex">#14422C</div><div class="use">active nav, hover</div></div></div>
+      <div class="chip"><div class="sw" style="background:var(--g-900)"></div><div class="meta"><div class="tk">green-900</div><div class="hex">#0F3322</div><div class="use">sidebar, AI banner</div></div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">Warm neutrals</div>
+    <div class="ramp">
+      <div class="chip"><div class="sw" style="background:var(--paper)"></div><div class="meta"><div class="tk">paper</div><div class="hex">#F4F2EC</div><div class="use">app background</div></div></div>
+      <div class="chip"><div class="sw" style="background:var(--surface);border-bottom:1px solid var(--border)"></div><div class="meta"><div class="tk">surface</div><div class="hex">#FFFFFF</div><div class="use">cards, panels</div></div></div>
+      <div class="chip"><div class="sw" style="background:var(--surface-2)"></div><div class="meta"><div class="tk">surface-2</div><div class="hex">#FAF8F2</div><div class="use">inputs, wells</div></div></div>
+      <div class="chip"><div class="sw" style="background:var(--border)"></div><div class="meta"><div class="tk">border</div><div class="hex">#E4E1D6</div><div class="use">hairlines</div></div></div>
+      <div class="chip"><div class="sw" style="background:var(--muted)"></div><div class="meta"><div class="tk">muted</div><div class="hex">#6C7A6F</div><div class="use">secondary text</div></div></div>
+      <div class="chip"><div class="sw" style="background:var(--text)"></div><div class="meta"><div class="tk">text</div><div class="hex">#2C3A30</div><div class="use">body text</div></div></div>
+      <div class="chip"><div class="sw" style="background:var(--ink)"></div><div class="meta"><div class="tk">ink</div><div class="hex">#16241B</div><div class="use">headings, strongest</div></div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">Semantic + accent</div>
+    <div class="ramp">
+      <div class="chip"><div class="sw" style="background:var(--positive)"></div><div class="meta"><div class="tk">positive</div><div class="hex">#2F9E5E</div><div class="use">gains, ▲ deltas, healthy</div></div></div>
+      <div class="chip"><div class="sw" style="background:var(--negative)"></div><div class="meta"><div class="tk">negative</div><div class="hex">#C0492F</div><div class="use">overdue, ▼ deltas, risk</div></div></div>
+      <div class="chip"><div class="sw" style="background:var(--signal)"></div><div class="meta"><div class="tk">signal ★</div><div class="hex">#C9742B</div><div class="use">single warm accent</div></div></div>
+    </div>
+    <div class="accent-note" style="margin-top:14px"><b>Accent discipline:</b> ochre <b>#C9742B</b> is the <em>only</em> warm color and appears <em>once or twice per screen</em> — the logo dot, one call-to-action, an attention nudge. It is never a fill or a theme. Green carries the brand; ochre is the spark that keeps it from looking like generic agritech.</div>
+  </div>
+
+  <!-- TYPE -->
+  <div class="sec">
+    <div class="sec-h">Typography</div>
+    <div class="type-grid">
+      <div class="k">Display / 34<br>Schibsted 700</div><div class="d-xl">Move stock, not spreadsheets.</div>
+      <div class="k">Display / 23<br>Schibsted 700</div><div class="d-lg">CEO Morning Brief</div>
+      <div class="k">Heading / 15<br>Schibsted 600</div><div class="d-h3">Regional performance</div>
+      <div class="k">Body / 14<br>Plex Sans 400</div><div class="b-bd">Yesterday Chi shipped 1,247 orders across 18 states, generating ₦43.2M in revenue — 187% of target.</div>
+      <div class="k">Small / 12<br>Plex Sans 400</div><div class="b-sm">2 distributors over credit limit · 30-day window</div>
+      <div class="k">Data / 15<br>Plex Mono 500</div><div class="m-dat">₦43,200,000 &nbsp; +8.1% &nbsp; 1,247</div>
+    </div>
+    <div class="b-sm" style="margin-top:14px">Mono is reserved for figures, deltas, IDs and timestamps — finance/distribution data must align in tabular columns. Display for headlines &amp; numbers-as-statement; Plex Sans for everything readable.</div>
+  </div>
+
+  <!-- FOUNDATIONS -->
+  <div class="sec">
+    <div class="sec-h">Foundations</div>
+    <div class="found">
+      <div class="fbox"><div class="lab">Radius · card 12 / control 8 / pill ∞</div><div class="demo-r"><div style="border-radius:12px"></div><div style="border-radius:8px"></div><div style="border-radius:999px"></div></div></div>
+      <div class="fbox"><div class="lab">Elevation · single soft card shadow</div><div class="ev1"></div></div>
+      <div class="fbox" style="flex:1;min-width:260px"><div class="lab">Principles</div><div class="b-sm" style="line-height:1.65">Warm paper ground, not white. One hairline weight. No gradients except the chart area fade. Icons line-only, 1.6 stroke. Generous whitespace over dividers.</div></div>
+    </div>
+  </div>
+
+  <!-- IN CONTEXT -->
+  <div class="sec">
+    <div class="sec-h">Applied — built from the tokens above only</div>
+    <div class="frame">
+      <div class="dash">
+        <div class="sb">
+          <div class="logo">Tradon<i>.</i></div>
+          <div class="nav on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="7" r="3.5"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/></svg>Distributors</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/></svg>Products</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.4 12h11"/></svg>Orders</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="2.4"/></svg>Finance</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 5-7"/></svg>Reporting</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 12 12 4H4v8l8 8Z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>Promos</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Billing &amp; Pricing</div>
+          <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 7 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.6 1.6 0 0 0 4.6 14H4a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 5.7 8 1.6 1.6 0 0 0 5.4 6.2l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.6 1.6 0 0 0 11 4.6V4a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8 1.6 1.6 0 0 0 1.4 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z"/></svg>Settings</div>
+          <div class="sb-ft">chi.tradon.app</div>
+        </div>
+        <div class="main">
+          <div class="top">
+            <div><div class="kick">SATURDAY · 16 MAY 2026</div><div class="h2">CEO Morning Brief</div></div>
+            <div style="display:flex;align-items:center;gap:14px">
+              <div class="pillbtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>Search</div>
+              <div class="av">OA</div>
+            </div>
+          </div>
+          <div class="ai">
+            <span class="sp"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3.4"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2 2M16.4 16.4l2 2M18.4 5.6l-2 2M7.6 16.4l-2 2"/></svg></span>
+            <div><h4>Good morning, Oluwaseyi.</h4><p>Yesterday Chi shipped <b>1,247 orders</b> across <b>18 states</b>, generating <b>₦43.2M</b> — <b>187%</b> of target. 23 distributors active; <b>Hellofield</b> and <b>Smatta Stores</b> are above 90% of credit limit — worth a call before Monday.</p></div>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><div class="l">Orders</div><div class="v">1,247</div><div class="d">▲ 12.4% vs last wk</div></div>
+            <div class="kpi"><div class="l">Revenue</div><div class="v">₦43.2M</div><div class="d">▲ 8.1% vs last wk</div></div>
+            <div class="kpi"><div class="l">Active distributors</div><div class="v">23</div><div class="d">▲ 2 onboarding</div></div>
+            <div class="kpi"><div class="l">Target attainment</div><div class="v">187%</div><div class="d">▲ ahead of plan</div></div>
+          </div>
+          <div class="row">
+            <div class="pnl" style="flex:1.6">
+              <div class="pnh"><span class="pt">Revenue trend</span><span class="ps">last 12 weeks</span></div>
+              <svg class="area" viewBox="0 0 560 140" preserveAspectRatio="none"><defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1B5E3A" stop-opacity=".20"/><stop offset="100%" stop-color="#1B5E3A" stop-opacity="0"/></linearGradient></defs><polygon points="0,140 0,104 51,86 102,92 153,62 204,74 255,42 306,54 357,26 408,38 459,12 510,20 560,6 560,140" fill="url(#ga)"/><polyline points="0,104 51,86 102,92 153,62 204,74 255,42 306,54 357,26 408,38 459,12 510,20 560,6" fill="none" stroke="#1B5E3A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="pnl" style="flex:1">
+              <div class="pnh"><span class="pt">Channel mix</span><span class="ps">by revenue</span></div>
+              <div style="display:flex;align-items:center;gap:18px">
+                <div style="width:96px;height:96px;border-radius:50%;flex-shrink:0;background:conic-gradient(#1B5E3A 0 46%,#C9742B 46% 74%,#2F9E5E 74% 90%,#AECDBA 90% 100%);position:relative"><div style="position:absolute;inset:17px;border-radius:50%;background:var(--surface)"></div></div>
+                <div class="legend">
+                  <div class="lg"><b style="background:#1B5E3A"></b><span class="n">Distributors</span><span class="p">46%</span></div>
+                  <div class="lg"><b style="background:#C9742B"></b><span class="n">Direct shop</span><span class="p">28%</span></div>
+                  <div class="lg"><b style="background:#2F9E5E"></b><span class="n">Filed orders</span><span class="p">16%</span></div>
+                  <div class="lg"><b style="background:#AECDBA"></b><span class="n">Other</span><span class="p">10%</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-bottom:0">
+            <div class="pnl" style="flex:1.4">
+              <div class="pnh"><span class="pt">Regional performance</span><span class="ps">orders index</span></div>
+              <div class="bar"><span class="rg">Lagos</span><span class="tk"><span class="fl" style="width:92%"></span></span><span class="vn">92</span></div>
+              <div class="bar"><span class="rg">Anambra</span><span class="tk"><span class="fl" style="width:78%"></span></span><span class="vn">78</span></div>
+              <div class="bar"><span class="rg">Kano</span><span class="tk"><span class="fl" style="width:64%"></span></span><span class="vn">64</span></div>
+              <div class="bar"><span class="rg">Rivers</span><span class="tk"><span class="fl" style="width:57%"></span></span><span class="vn">57</span></div>
+              <div class="bar" style="margin-bottom:0"><span class="rg">Oyo</span><span class="tk"><span class="fl" style="width:41%"></span></span><span class="vn">41</span></div>
+            </div>
+            <div class="pnl" style="flex:1">
+              <div class="pnh"><span class="pt">Collection efficiency</span></div>
+              <div class="big">91<s>%</s></div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px">₦4.1M overdue · 30-day window</div>
+              <div style="margin-top:16px;height:8px;background:var(--paper);border-radius:5px;overflow:hidden"><div style="width:91%;height:100%;background:var(--positive);border-radius:5px"></div></div>
+              <div style="margin-top:14px;font-size:12px;color:var(--signal);font-weight:600">2 distributors over limit →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="auth">
+        <div class="card">
+          <div class="lg2">Tradon<i>.</i></div>
+          <div class="su">Sign in to <b>chi.tradon.app</b></div>
+          <div class="fld"><div class="fl2">Work email</div><div class="ip"></div></div>
+          <div class="fld"><div class="fl2">Password</div><div class="ip"></div></div>
+          <div class="btn">Sign in</div>
+          <div class="fp">Forgot password?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ftr">
+    Source: <code>design/brand-exploration/Tradon Brand — Field Green.html</code> · Static HTML/CSS, no external scripts · Type via Google Fonts (graceful fallback).
+    Approve and I write <code>brand-spec.md</code> + return to the F0 implementation plan.
+  </div>
+</div>
+</body>
+</html>
