@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { Pool } from 'pg';
 import { q } from '../helpers/db';
 import { writeAudit } from '@/lib/compliance/audit';
 
@@ -19,5 +20,23 @@ describe('audit log', () => {
     await q(`delete from audit_log where tenant_id=$1`, [t.id]);
     const stillThere = await q(`select count(*)::int n from audit_log where tenant_id=$1`, [t.id]);
     expect(stillThere[0].n).toBe(1);
+  });
+
+  it('TRUNCATE is denied for the app role (anon)', async () => {
+    await q(`delete from tenants where slug='aud-trunc'`);
+    const [t] = await q<{id:string}>(`insert into tenants(name,slug)
+      values('AudTrunc','aud-trunc') returning id`);
+    await writeAudit({ tenantId: t.id, actor: 'u1', action: 'probe', target: t.id });
+    const c = await new Pool({ connectionString: process.env.DATABASE_URL }).connect();
+    try {
+      await c.query(`set role anon`);
+      await expect(c.query(`truncate audit_log`)).rejects.toThrow(/permission denied/i);
+    } finally {
+      await c.query(`reset role`).catch(()=>{});
+      c.release();
+    }
+    // row still present
+    const n = await q(`select count(*)::int n from audit_log where tenant_id=$1`, [t.id]);
+    expect(n[0].n).toBe(1);
   });
 });
