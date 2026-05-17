@@ -98,9 +98,19 @@ export function AppShell({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen bg-paper text-ink">
-      {/* Sidebar */}
-      <nav className="w-[218px] bg-green-900 text-on-deep p-[22px_14px] flex flex-col shrink-0">
+    <div className="flex flex-col md:flex-row min-h-[100dvh] bg-paper text-ink">
+      {/* Mobile top bar — visible only below md */}
+      <div className="md:hidden bg-green-900 text-on-primary flex items-center justify-between px-4 py-3 shrink-0">
+        <div className="font-display font-bold text-lg text-on-primary">
+          Tradon<span className="text-signal">.</span>
+        </div>
+        <span className="font-mono text-[11px] bg-primary-700 text-on-primary border border-white/20 px-[10px] py-1 rounded-full">
+          role · {role}
+        </span>
+      </div>
+
+      {/* Sidebar — desktop only */}
+      <nav className="hidden md:flex w-[218px] bg-green-900 text-on-deep p-[22px_14px] flex-col shrink-0">
         {/* Wordmark */}
         <div className="font-display font-bold text-xl text-on-primary px-2 pb-6">
           Tradon<span className="text-signal">.</span>
@@ -130,27 +140,27 @@ export function AppShell({
 
       {/* Main column */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Topbar */}
-        <header className="h-[62px] border-b border-hairline flex items-center justify-between px-[26px] bg-surface shrink-0">
+        {/* Topbar — desktop visible, mobile simplified */}
+        <header className="h-[62px] border-b border-hairline flex items-center justify-between px-5 sm:px-[26px] bg-surface shrink-0">
           {/* Crumb */}
-          <div className="text-[13px] text-muted">
+          <div className="text-[13px] text-muted truncate min-w-0 mr-3">
             <b className="text-ink font-display font-semibold">{tenantName}</b>
             {' · '}
             Dashboard
           </div>
 
           {/* Right cluster */}
-          <div className="flex items-center gap-[14px]">
-            {/* Search pill */}
-            <div className="flex items-center gap-2 bg-surface-2 border border-hairline rounded-full px-[14px] py-2 text-[12px] text-muted">
+          <div className="flex items-center gap-[14px] shrink-0">
+            {/* Search pill — hidden on mobile to avoid crowding */}
+            <div className="hidden sm:flex items-center gap-2 bg-surface-2 border border-hairline rounded-full px-[14px] py-2 text-[12px] text-muted">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
                 <circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" />
               </svg>
               Search
             </div>
 
-            {/* Role badge */}
-            <span className="font-mono text-[11px] bg-green-50 text-primary-700 border border-green-200 px-[10px] py-1 rounded-full">
+            {/* Role badge — desktop only (mobile bar shows it) */}
+            <span className="hidden md:inline font-mono text-[11px] bg-green-50 text-primary-700 border border-green-200 px-[10px] py-1 rounded-full">
               role · {role}
             </span>
 
@@ -162,8 +172,10 @@ export function AppShell({
         </header>
 
         {/* Content area */}
-        <div className="flex-1 p-[42px] flex items-center justify-center bg-paper overflow-auto">
-          {children}
+        <div className="flex-1 p-5 sm:p-8 md:p-10 flex items-center justify-center bg-paper overflow-auto">
+          <div className="w-full max-w-[560px]">
+            {children}
+          </div>
         </div>
       </div>
     </div>

@@ -12,9 +12,20 @@ export default async function AdminTenants() {
     .order('created_at', { ascending: false });
 
   return (
-    <div className="flex h-screen bg-paper text-ink">
-      {/* Left nav — light inverted shell */}
-      <nav className="w-[214px] bg-surface border-r border-hairline p-[22px_14px] flex flex-col flex-shrink-0">
+    <div className="flex flex-col md:flex-row min-h-[100dvh] bg-paper text-ink">
+      {/* Mobile top bar — visible only below md */}
+      <div className="md:hidden bg-surface border-b border-hairline flex items-center gap-3 px-5 py-3 shrink-0">
+        <div className="font-display font-bold text-xl text-ink">
+          Tradon<span className="text-signal">.</span>
+        </div>
+        <span className="inline-block font-mono text-[10px] tracking-[0.16em] text-signal
+          border border-green-200 bg-green-50 px-2.5 py-[3px] rounded-full">
+          PLATFORM
+        </span>
+      </div>
+
+      {/* Left nav — light inverted shell; desktop only */}
+      <nav className="hidden md:flex w-[214px] bg-surface border-r border-hairline p-[22px_14px] flex-col flex-shrink-0">
         {/* Wordmark */}
         <div className="font-display font-bold text-xl text-ink px-2">
           Tradon<span className="text-signal">.</span>
@@ -81,7 +92,7 @@ export default async function AdminTenants() {
       </nav>
 
       {/* Main content */}
-      <main className="flex-1 p-[30px_38px] overflow-hidden">
+      <main className="flex-1 p-5 sm:p-8 md:p-9 overflow-auto">
         {/* Top bar: heading + Superadmin badge */}
         <div className="flex items-baseline justify-between mb-[6px]">
           <h1 className="font-display font-bold text-[22px] text-ink tracking-[-0.02em]">
@@ -98,11 +109,11 @@ export default async function AdminTenants() {
           region and the RLS tenant context.
         </p>
 
-        <div className="flex gap-[26px]">
+        <div className="flex flex-col lg:flex-row gap-6">
           {/* Provisioning form */}
           <form
             action={createTenant}
-            className="flex-none w-[440px] bg-surface border border-hairline
+            className="w-full lg:w-[440px] lg:flex-none bg-surface border border-hairline
               rounded-card p-[26px] shadow-card"
           >
             {/* Business group */}
@@ -169,27 +180,30 @@ export default async function AdminTenants() {
             <div className="font-display font-semibold text-[13px] text-ink mb-[14px]">
               Active tenants
             </div>
-            <div className="border border-hairline rounded-card overflow-hidden bg-surface">
-              {/* Header row */}
-              <div className="grid grid-cols-3 bg-surface-2 text-[10.5px] uppercase
-                tracking-[0.05em] text-muted font-semibold">
-                <div className="px-4 py-[13px]">Workspace</div>
-                <div className="px-4 py-[13px]">Region</div>
-                <div className="px-4 py-[13px]">Created</div>
-              </div>
-              {/* Data rows */}
-              {(tenants ?? []).map(t => (
-                <div
-                  key={t.slug}
-                  className="grid grid-cols-3 text-[12.5px] border-t border-hairline"
-                >
-                  <div className="px-4 py-[13px]">{t.slug}.tradon.app</div>
-                  <div className="px-4 py-[13px]">{t.region}</div>
-                  <div className="px-4 py-[13px] font-mono text-muted">
-                    {new Date(t.created_at).toISOString().slice(0, 10)}
-                  </div>
+            <div className="border border-hairline rounded-card overflow-hidden bg-surface overflow-x-auto">
+              {/* Inner wrapper with min-width to prevent column crush */}
+              <div className="min-w-[420px]">
+                {/* Header row */}
+                <div className="grid grid-cols-3 bg-surface-2 text-[10.5px] uppercase
+                  tracking-[0.05em] text-muted font-semibold">
+                  <div className="px-4 py-[13px]">Workspace</div>
+                  <div className="px-4 py-[13px]">Region</div>
+                  <div className="px-4 py-[13px]">Created</div>
                 </div>
-              ))}
+                {/* Data rows */}
+                {(tenants ?? []).map(t => (
+                  <div
+                    key={t.slug}
+                    className="grid grid-cols-3 text-[12.5px] border-t border-hairline"
+                  >
+                    <div className="px-4 py-[13px]">{t.slug}.tradon.app</div>
+                    <div className="px-4 py-[13px]">{t.region}</div>
+                    <div className="px-4 py-[13px] font-mono text-muted">
+                      {new Date(t.created_at).toISOString().slice(0, 10)}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

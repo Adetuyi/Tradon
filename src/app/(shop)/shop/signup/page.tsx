@@ -28,11 +28,11 @@ export default function ShopSignupPage() {
       <form action={shopSignup}>
         <Input label="Full name" name="full_name" type="text" required placeholder="Adaeze Okafor" />
 
-        <div className="flex gap-3.5">
-          <div className="flex-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
             <Input label="Email" name="email" type="email" required placeholder="you@example.com" />
           </div>
-          <div className="flex-1">
+          <div>
             <Input label="Phone" name="phone" type="tel" placeholder="801 234 5678" suffix="+234" />
           </div>
         </div>
