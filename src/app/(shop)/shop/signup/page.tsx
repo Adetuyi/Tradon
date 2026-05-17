@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { AuthLayout } from '@/components/ui/AuthLayout';
 import { Input } from '@/components/ui/Input';
+import { buttonClass } from '@/components/ui/Button';
 import { shopSignup } from '../actions';
 
 export default function ShopSignupPage() {
@@ -40,10 +41,7 @@ export default function ShopSignupPage() {
           <Input label="Password" name="password" type="password" required placeholder="••••••••••" />
         </div>
 
-        <button
-          type="submit"
-          className="w-full h-[46px] rounded-ctl bg-primary text-on-primary font-display font-semibold text-sm flex items-center justify-center"
-        >
+        <button type="submit" className={`w-full ${buttonClass('primary')}`}>
           Create account
         </button>
       </form>
