@@ -8,6 +8,7 @@ import { listProducts } from '@/lib/products/products';
 import { productStats } from '@/lib/products/stats';
 import { listCategories } from '@/lib/products/categories';
 import { ProductForm } from './ProductForm';
+import { StockAdjust } from './StockAdjust';
 
 export const dynamic = 'force-dynamic';
 
@@ -94,14 +95,14 @@ export default async function ProductsPage({ searchParams }:
                     : low ? 'bg-surface-2 text-negative border-hairline'
                     : 'bg-green-50 text-primary-700 border-green-200'}`}>
                     {p.status==='archived' ? 'Archived' : low ? 'Low' : 'Active'}</span></div>
-                <div className="px-4 py-3"><ProductForm categories={categories} product={{
+                <div className="px-4 py-3"><span className="flex gap-3 items-center"><ProductForm categories={categories} product={{
                   id: p.id, sku: p.sku, name: p.name,
                   selling_price: String(p.selling_price),
                   cost_price: String(p.cost_price),
                   unit: p.unit, reorder_threshold: p.reorder_threshold,
                   category_id: p.category_id ?? null,
                   image_key: p.image_key ?? null,
-                }} /></div>
+                }} /><StockAdjust productId={p.id} name={p.name} /></span></div>
               </div>
             );})}
           </div></div>

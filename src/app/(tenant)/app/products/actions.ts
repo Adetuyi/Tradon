@@ -5,7 +5,7 @@ import { resolveTenant } from '@/lib/tenancy/resolveTenant';
 import { getStaffSession } from '@/lib/auth/staff';
 import { requirePermission } from '@/lib/rbac/can';
 import { createProduct, updateProduct, archiveProduct } from '@/lib/products/products';
-import { recordStockMovement, MovementType } from '@/lib/products/stock';
+import { recordStockMovement, listMovements, MovementType } from '@/lib/products/stock';
 import { requestImageUpload, attachImage } from '@/lib/products/images';
 import { revalidatePath } from 'next/cache';
 import { PRODUCTS_READ, PRODUCTS_WRITE } from './permissions';
@@ -50,13 +50,20 @@ export async function archiveProductAction(fd: FormData) {
 export async function adjustStockAction(fd: FormData) {
   const { tenantId, actor } = await gate(PRODUCTS_WRITE);
   const type = String(fd.get('type')) as MovementType;
-  const reason = String(fd.get('reason')||'');
+  const reason = String(fd.get('reason') || '');
   if (type === 'adjustment' && !reason.trim()) throw new Error('reason required for adjustment');
-  await recordStockMovement(tenantId, { productId:String(fd.get('productId')),
-    type, qtyDelta:Number(fd.get('qtyDelta')),
-    unitCost: fd.get('unitCost') ? Number(fd.get('unitCost')) : null,
+  const mag = Math.abs(Number(fd.get('qty')));
+  if (!mag || Number.isNaN(mag)) throw new Error('quantity required');
+  const qtyDelta = String(fd.get('direction')) === 'subtract' ? -mag : mag;
+  await recordStockMovement(tenantId, { productId: String(fd.get('productId')),
+    type, qtyDelta, unitCost: fd.get('unitCost') ? Number(fd.get('unitCost')) : null,
     reason: reason || null, actor });
   revalidatePath('/app/products');
+}
+
+export async function recentMovementsAction(productId: string) {
+  const { tenantId } = await gate(PRODUCTS_READ);
+  return listMovements(tenantId, productId);
 }
 export async function requestImageUploadAction(productId: string,
   contentType: string, size: number) {
