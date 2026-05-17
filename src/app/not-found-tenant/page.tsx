@@ -32,7 +32,10 @@ export default function TenantNotFound() {
 
         {/* Body */}
         <p className="text-sm text-muted leading-relaxed max-w-[460px]">
-          This isn&rsquo;t an active Tradon workspace. The business may not have launched,
+          <span className="font-mono text-[12.5px] bg-surface px-2 py-0.5 rounded border border-hairline text-ink">
+            acme.tradon.app
+          </span>{' '}
+          isn&rsquo;t an active Tradon workspace. The business may not have launched,
           or the link may be mistyped.
         </p>
 

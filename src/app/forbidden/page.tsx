@@ -16,7 +16,7 @@ export default function Forbidden() {
       {/* Content panel */}
       <div className="relative z-10 px-16 max-w-[620px]">
         {/* Wordmark */}
-        <div className="font-display font-bold text-xl text-ink mb-10">
+        <div className="font-display font-bold text-xl tracking-tight text-ink mb-10">
           Tradon<span className="text-signal">.</span>
         </div>
 
@@ -26,13 +26,21 @@ export default function Forbidden() {
         </div>
 
         {/* Display headline */}
-        <h1 className="font-display font-bold text-[38px] leading-tight tracking-[-0.025em] text-ink my-3">
+        <h1 className="font-display font-bold text-[38px] leading-[1.12] tracking-[-0.025em] text-ink mt-3 mb-3.5">
           This area is outside<br />your permissions.
         </h1>
 
         {/* Supportive copy */}
         <p className="text-sm text-muted leading-relaxed max-w-[460px]">
-          Your role doesn&apos;t include the required permission. An <strong>Owner</strong> or{' '}
+          Your role{' '}
+          <span className="font-mono text-[12.5px] bg-surface px-2 py-0.5 rounded border border-hairline text-ink">
+            Sales
+          </span>{' '}
+          doesn&apos;t include{' '}
+          <span className="font-mono text-[12.5px] bg-surface px-2 py-0.5 rounded border border-hairline text-ink">
+            finance.read
+          </span>
+          . An <strong>Owner</strong> or{' '}
           <strong>Admin</strong> can grant it in Users &amp; Permissions.
         </p>
 
