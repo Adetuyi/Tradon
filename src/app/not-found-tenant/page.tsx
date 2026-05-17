@@ -23,21 +23,11 @@ export default function TenantNotFound() {
         </div>
 
         {/* Composed mark */}
-        <div className="size-12 rounded-card border border-hairline bg-surface flex items-center justify-center mb-5">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="w-5 h-5 text-primary"
-          >
-            {/* Compass / broken-link glyph: an open circle with a crossed-out diagonal */}
-            <circle cx="12" cy="12" r="9" />
-            <path d="M16.5 7.5 9 12l-1.5 4.5 4.5-1.5 7.5-7.5Z" />
-            <path d="m7 17 2-2" />
-            <line x1="4" y1="4" x2="20" y2="20" strokeDasharray="2 3" />
+        <div className="size-12 rounded-card border border-hairline bg-surface flex items-center justify-center text-primary mb-5">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"
+            strokeLinecap="round" strokeLinejoin="round" className="size-5">
+            <path d="M12 21s-6-5.2-6-10a6 6 0 1 1 12 0c0 4.8-6 10-6 10Z" />
+            <circle cx="12" cy="11" r="2.2" />
           </svg>
         </div>
 
