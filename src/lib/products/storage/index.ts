@@ -4,7 +4,6 @@ let cached: StorageAdapter | null = null;
 export function getStorage(): StorageAdapter {
   if (cached) return cached;
   if (process.env.R2_BUCKET && process.env.R2_ACCOUNT_ID) {
-    // @ts-expect-error r2 added in next task
     const { R2Storage } = require('./r2') as typeof import('./r2');
     cached = new R2Storage();
   } else {
