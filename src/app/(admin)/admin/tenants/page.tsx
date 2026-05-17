@@ -3,6 +3,8 @@ import { Input } from '@/components/ui/Input';
 import { buttonClass } from '@/components/ui/Button';
 import { createTenant } from './actions';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminTenants() {
   const { data: tenants } = await supabaseAdmin
     .from('tenants')
