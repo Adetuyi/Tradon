@@ -7,6 +7,7 @@ import { AppShell } from '@/components/ui/AppShell';
 import { listProducts } from '@/lib/products/products';
 import { productStats } from '@/lib/products/stats';
 import { listCategories } from '@/lib/products/categories';
+import { ProductForm } from './ProductForm';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,8 +35,7 @@ export default async function ProductsPage({ searchParams }:
       <div className="w-full max-w-[1100px]">
         <div className="flex items-center justify-between gap-3 flex-wrap mb-5">
           <h1 className="font-display font-bold text-2xl text-ink">Products</h1>
-          <span className="h-[42px] px-[18px] inline-flex items-center rounded-ctl
-            bg-primary text-on-primary font-display font-semibold text-sm">+ New product</span>
+          <ProductForm categories={categories} />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
           {[['Total products', String(stats.totalActive), 'active SKUs', false],
@@ -51,9 +51,9 @@ export default async function ProductsPage({ searchParams }:
         </div>
         <div className="bg-surface border border-hairline rounded-card overflow-hidden">
           <div className="overflow-x-auto"><div className="min-w-[840px]">
-            <div className="grid grid-cols-[2.1fr_1fr_0.85fr_0.85fr_0.7fr_0.75fr] bg-surface-2
+            <div className="grid grid-cols-[2fr_0.9fr_0.8fr_0.8fr_0.6fr_0.7fr_0.7fr] bg-surface-2
               text-[10.5px] uppercase tracking-wide text-muted font-semibold">
-              {['Product','Category','Price','Cost','Qty','Status'].map(h =>
+              {['Product','Category','Price','Cost','Qty','Status','Actions'].map(h =>
                 <div key={h} className="px-4 py-3">{h}</div>)}
             </div>
             {products.length === 0 && (
@@ -71,7 +71,7 @@ export default async function ProductsPage({ searchParams }:
             {products.map(p => {
               const low = p.current_quantity <= p.reorder_threshold;
               return (
-              <div key={p.id} className="grid grid-cols-[2.1fr_1fr_0.85fr_0.85fr_0.7fr_0.75fr]
+              <div key={p.id} className="grid grid-cols-[2fr_0.9fr_0.8fr_0.8fr_0.6fr_0.7fr_0.7fr]
                 border-t border-hairline text-[13px] items-center">
                 <div className="px-4 py-3 flex items-center gap-3">
                   <span className="w-[38px] h-[38px] rounded-lg bg-green-50 border border-green-200
@@ -94,6 +94,14 @@ export default async function ProductsPage({ searchParams }:
                     : low ? 'bg-surface-2 text-negative border-hairline'
                     : 'bg-green-50 text-primary-700 border-green-200'}`}>
                     {p.status==='archived' ? 'Archived' : low ? 'Low' : 'Active'}</span></div>
+                <div className="px-4 py-3"><ProductForm categories={categories} product={{
+                  id: p.id, sku: p.sku, name: p.name,
+                  selling_price: String(p.selling_price),
+                  cost_price: String(p.cost_price),
+                  unit: p.unit, reorder_threshold: p.reorder_threshold,
+                  category_id: p.category_id ?? null,
+                  image_key: p.image_key ?? null,
+                }} /></div>
               </div>
             );})}
           </div></div>

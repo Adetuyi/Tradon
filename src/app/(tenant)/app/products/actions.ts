@@ -8,9 +8,8 @@ import { createProduct, updateProduct, archiveProduct } from '@/lib/products/pro
 import { recordStockMovement, MovementType } from '@/lib/products/stock';
 import { requestImageUpload, attachImage } from '@/lib/products/images';
 import { revalidatePath } from 'next/cache';
-
-export const PRODUCTS_READ = 'products.read';
-export const PRODUCTS_WRITE = 'products.write';
+import { PRODUCTS_READ, PRODUCTS_WRITE } from './permissions';
+export { PRODUCTS_READ, PRODUCTS_WRITE };
 
 async function gate(perm: string) {
   const tenant = await resolveTenant((await headers()).get('host') ?? '');
