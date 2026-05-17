@@ -1,7 +1,7 @@
 create table stock_movements (
   id uuid primary key default gen_random_uuid(),
-  tenant_id uuid not null references tenants(id) on delete cascade,
-  product_id uuid not null references products(id),
+  tenant_id uuid not null,
+  product_id uuid not null,
   type text not null check (type in ('receipt','adjustment','sale','return')),
   qty_delta int not null check (qty_delta <> 0),
   unit_cost numeric(14,2),
