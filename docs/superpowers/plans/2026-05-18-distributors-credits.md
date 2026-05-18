@@ -1360,4 +1360,80 @@ git commit -m "test: distributors & credits E2E + dev docs"
 
 **Type consistency:** `withTenant(tenantId, fn)` used as in F0/Products throughout. `Distributor`/`CreateDistributorInput` (Task 5) consumed by setStatus/setCreditLimit (6,7), actions (10), pages (11,12). `CreditType`/`CreditMovement` defined in `credit.ts` (Task 8), imported by actions (10) and detail page (12). `record_credit_movement` SQL signature `(uuid,text,numeric,text,text)` consistent (Tasks 4,8). `setStatus(tenantId,id,next,actor)` / `setCreditLimit(tenantId,id,newLimit,actor)` signatures consistent across Tasks 6,7,10,14. Permission keys `distributors.read|write` match F0 `permissions.ts`. RLS policy + append-only SQL match F0/Products committed patterns. `writeAudit` signature `{tenantId,actor,action,target?,meta?}` matches F0 `src/lib/compliance/audit.ts`.
 
-**Note for executor:** Task 7's test depends on Task 8's `recordCreditMovement`; author Task 7's test at Task 7 (TDD) but it goes green only after Task 8 — execute Task 8 immediately after Task 7's implementation and confirm both green before Task 7's commit (or commit Task 7 impl, then Task 8, then a fix-commit if needed). Tasks 12 & 13 ship in one commit (Task 13 Step 4). Task 1 (design) gates ONLY Tasks 11–13; Tasks 2–10 + 14 may proceed first.
+**Note for executor:** Task 7's test depends on Task 8's `recordCreditMovement`; author Task 7's test at Task 7 (TDD) but it goes green only after Task 8 — execute Task 8 immediately after Task 7's implementation and confirm both green before Task 7's commit (or commit Task 7 impl, then Task 8, then a fix-commit if needed). Tasks 12 & 13 ship in one commit (Task 13 Step 4). Task 1 (design) was pulled forward and APPROVED before backend resumed; the design-first gap-check surfaced the addendum below.
+
+---
+
+## Addendum — design-first amendments (approved)
+
+The pulled-forward Task 1 design review (user-approved) added a tabbed distributor detail + an Activity tab. One small backend addition, no new tables.
+
+### Task 9b: `activity.ts` — `listDistributorActivity` (insert after Task 9)
+
+**Files:** Create `src/lib/distributors/activity.ts`, `tests/integration/distributor-activity.test.ts`
+
+- [ ] **Step 1: Failing test** `tests/integration/distributor-activity.test.ts`:
+```ts
+import { describe, it, expect } from 'vitest';
+import { q } from '../helpers/db';
+import { createDistributor, setStatus, setCreditLimit } from '@/lib/distributors/distributors';
+import { listDistributorActivity } from '@/lib/distributors/activity';
+
+async function tid(slug:string){ await q(`delete from tenants where slug=$1`,[slug]);
+  const [t]=await q<{id:string}>(`insert into tenants(name,slug) values('A',$1) returning id`,[slug]);
+  return t.id; }
+
+describe('listDistributorActivity', () => {
+  it('returns this distributor audit rows newest-first; tenant-isolated', async () => {
+    const t = await tid('da-1');
+    const id = await createDistributor(t,{ businessName:'A',email:'a@x.com',
+      contactName:'A',creditLimit:1000 });
+    await setStatus(t, id, 'active', 'u1');           // distributor.status_changed
+    await setCreditLimit(t, id, 2000, 'u1');          // distributor.credit_limit_changed
+    const rows = await listDistributorActivity(t, id);
+    expect(rows.map(r=>r.action)).toEqual(
+      ['distributor.credit_limit_changed','distributor.status_changed']); // newest first
+    expect(rows[0].meta.new).toBe(2000); expect(rows[0].actor).toBe('u1');
+    const other = await tid('da-2');
+    expect(await listDistributorActivity(other, id)).toEqual([]); // RLS-isolated
+  });
+});
+```
+
+- [ ] **Step 2:** `pnpm vitest run tests/integration/distributor-activity.test.ts` → FAIL (module missing).
+
+- [ ] **Step 3:** Implement `src/lib/distributors/activity.ts`:
+```ts
+import { withTenant } from '@/lib/db/withTenant';
+
+export type ActivityEntry = { action:string; actor:string;
+  meta:Record<string,unknown>; created_at:string };
+
+export async function listDistributorActivity(tenantId: string,
+  distributorId: string): Promise<ActivityEntry[]> {
+  return withTenant(tenantId, async c => (await c.query(
+    `select action, actor, meta, created_at from audit_log
+     where target=$1 and action like 'distributor.%'
+     order by created_at desc`, [distributorId])).rows);
+}
+```
+(`audit_log` is the F0 append-only table — already RLS-scoped by `tenant_id=current_tenant_id()`; `withTenant` scopes it, so a second tenant sees none. No new table/migration.)
+
+- [ ] **Step 4:** `pnpm vitest run tests/integration/distributor-activity.test.ts` → PASS. Full `pnpm test` green.
+
+- [ ] **Step 5:** Commit:
+```bash
+git add src/lib/distributors/activity.ts tests/integration/distributor-activity.test.ts
+git commit -m "feat: listDistributorActivity (per-distributor F0 audit_log view)"
+```
+
+### Task 12 amendment — detail becomes a tabbed profile
+
+`src/app/(tenant)/app/distributors/[id]/page.tsx` is built to the APPROVED `design/distributors/Tradon Distributors — UI.html` screen 02 (tabbed). Tabs rendered via a `?tab=` searchParam (server component, no client JS needed) or simple in-page sections styled as tabs — implementer's choice, but match the design:
+- **Overview** (default): credit summary cards (limit/outstanding/available) + a details grid (business name, contact via shop_users, region, address, status, onboarded) + the existing `<StatusActions>`.
+- **Credit**: `<CreditPanel>` (set-limit + record) + the `listCreditMovements` ledger **with an Actor column** (the `actor` field is already returned by `listCreditMovements`).
+- **Activity**: `listDistributorActivity(tenant.id, id)` rendered as action / change(meta old→new) / actor · when; include the "actor shown as user-id; friendly-name later" hint.
+- **Orders**: a deferred placeholder block ("arrives with the Orders sub-project") — NO Orders backend here.
+Detail page also surfaces contact email/name from `shop_users` (join `shop_users` on `distributors.shop_user_id` in `getDistributor`, or a small `getDistributorContact` read — implementer's choice, tenant-scoped via withTenant). Semantic Tailwind only; server component; same auth/redirect order. Tasks 12+13 still ship together.
+
+This addendum overrides the original Task 9 ordering note: execute Task 9b immediately after Task 9; Task 12 follows the amended spec above.

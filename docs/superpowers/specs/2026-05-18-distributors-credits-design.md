@@ -86,6 +86,7 @@ Focused, independently testable server modules; all tenant-scoped via the existi
 - `distributors.ts` — `createDistributor` (designate an existing shop_user, or provision a shop_user shell), `updateDistributor` (profile fields), `setStatus` (approve/reject/suspend/reactivate/archive — enforces valid transitions; activating also sets `shop_users.status='distributor'`; writes F0 audit), `setCreditLimit` (updates the field + `writeAudit` `distributor.credit_limit_changed`; rejects a new limit below current `outstanding`), `listDistributors(filter)`, `getDistributor`.
 - `credit.ts` — `recordCreditMovement(...)` (invokes the SQL function), `listCreditMovements(distributorId)`.
 - `stats.ts` — `distributorStats()` → `{ totalActive, pendingCount, totalOutstanding, overLimitCount }` (overLimit = active distributors at/above a near-limit threshold; precise definition: `outstanding >= credit_limit` count for the header card).
+- `activity.ts` — `listDistributorActivity(distributorId)` → reads the existing F0 `audit_log` (no new table) tenant-scoped via `withTenant`, filtered to `target = distributorId`, newest first: `{ action, actor, meta, created_at }[]`. Surfaces `distributor.status_changed` + `distributor.credit_limit_changed` (who, old→new, when) for the detail page Activity tab. `actor` is the staff user-id; friendly-name resolution is a flagged later follow-up (not in this sub-project).
 
 No module reaches outside its table set; each answers what/how/depends-on cleanly.
 
@@ -105,7 +106,11 @@ Routes inside the existing F0 **AppShell** ("Distributors" nav item active):
 
 - **`/app/distributors`** — header stat cards (Active / Pending / Total outstanding / Over-limit), filterable + searchable table (business name, region, status badge, credit limit, outstanding, available = `limit − outstanding`), row actions (view, approve if pending, suspend/reactivate, set limit).
 - **Approval queue** — `pending` distributors with Approve / Reject.
-- **Distributor detail** `/app/distributors/[id]` — profile, credit panel (limit with inline edit, outstanding, available), credit-movement history (the ledger, newest first), and actions: set limit, record repayment/adjustment, suspend/reactivate/archive.
+- **Distributor detail** `/app/distributors/[id]` — a **tabbed** page:
+  - **Overview** — business details, contact, location (region/address), credit summary cards (limit / outstanding / available), and status actions (approve/reject/suspend/reactivate/archive).
+  - **Credit** — set limit (inline), record repayment/adjustment, and the `credit_movements` ledger newest-first **with an actor column** (the `actor` already stored on every movement).
+  - **Activity** — the per-distributor audit view from F0 `audit_log` via `listDistributorActivity`: status changes + credit-limit changes showing who / old→new / when.
+  - **Orders** — deferred placeholder, structurally slotted ("arrives with the Orders sub-project"); no Orders backend in this sub-project.
 
 Built on the locked Field Green tokens and the responsive patterns + table style established in Products (muted secondary figures, segmented controls, mobile-correct, semantic Tailwind only — no raw hex). An approved static design for these screens is produced and signed off **before** implementation (the one human gate), then built to that reference as semantic-Tailwind components (server components except where interactivity requires `'use client'`).
 
@@ -118,6 +123,7 @@ Test-first per task, on local Supabase (port **54332**, never 54322); test files
 - **RLS isolation** — two-tenant tests for `distributors` + `credit_movements`; F0 `rls-guard` auto-covers them (build fails if unprotected).
 - **Credit integrity** — ledger row + `outstanding` move atomically; over-limit draw rejected (tx aborts, `outstanding` unchanged); negative `outstanding` rejected; `purchase_draw` rejected when status ≠ `active`; `repayment` allowed when `suspended`; direct `credit_movements` insert (bypassing the function) rejected by the trigger; append-only (UPDATE/DELETE no-op, TRUNCATE denied to app roles — mirrors F0 audit); **concurrency** — parallel `purchase_draw`s never desync ledger↔`outstanding` and never exceed `credit_limit`.
 - **Domain** — status transition matrix (valid allowed, invalid raises); activating sets `shop_users.status='distributor'`; `setCreditLimit` writes the F0 audit row and rejects a limit `< outstanding`; create-via-existing-shop_user vs create-with-shell.
+- **Activity** — `listDistributorActivity` returns the F0 `audit_log` rows for that distributor (status + limit changes) newest-first with actor/meta, tenant-scoped (a second tenant sees none).
 - **Stats** — counts/sums correct (active, pending, total outstanding, over-limit boundary).
 - **RBAC** — `distributors.read` cannot mutate; `distributors.write` can; routes gated; movement actions awaited-gated.
 - **E2E** — create distributor → set limit → `purchase_draw` (Orders-style) → over-limit draw rejected → `repayment` → suspend blocks further draw → archive; two-tenant isolation throughout; non-vacuous (tenant A proven populated before tenant B asserted empty).
@@ -134,7 +140,9 @@ Test-first per task, on local Supabase (port **54332**, never 54322); test files
 | Integrity | `record_credit_movement` DB fn + trigger; CHECK `0 ≤ outstanding ≤ credit_limit`; `purchase_draw` requires `active`; repayment/adjustment any non-archived status |
 | Limit changes | `credit_limit` field update audited via F0 `audit_log` (not a ledger row); new limit cannot be below current `outstanding` |
 | Lifecycle | `distributors.status` pending→active→suspended/archived state machine; archive, never hard-delete |
-| Foundation reuse | tenant_id+RLS, `withTenant`, append-only FK-free ledger pattern, `record_*` fn+trigger (anon-scoped, documented), `writeAudit`, RBAC keys already seeded, AppShell, Field Green, TDD, on `master`, port 54332 |
+| Detail page | Tabbed: Overview / Credit (ledger w/ actor column) / Activity (F0 audit_log per distributor) / Orders (deferred placeholder, slotted) |
+| Activity view | `listDistributorActivity` reads existing F0 `audit_log` (no new table); actor shown as user-id, friendly-name resolution = flagged later follow-up |
+| Foundation reuse | tenant_id+RLS, `withTenant`, append-only FK-free ledger pattern, `record_*` fn+trigger (anon-scoped, documented), `writeAudit` + `audit_log` read, RBAC keys already seeded, AppShell, Field Green, TDD, on `master`, port 54332 |
 
 ---
 

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tradon · Distributors UI</title>
+<!-- Design-first reference for Distributors & credits. Static, no external scripts.
+     Field Green tokens (design/brand-spec.md). F0 AppShell chrome. Responsive.
+     Detail is a tabbed profile (Overview/Credit/Activity/Orders-deferred). -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --g-50:#ECF3EE;--g-100:#D7E6DC;--g-200:#AECDBA;--g-400:#4F9168;
+    --g-600:#1B5E3A;--g-700:#14422C;--g-900:#0F3322;
+    --paper:#F4F2EC;--surface:#FFFFFF;--surface-2:#FAF8F2;
+    --border:#E4E1D6;--border-strong:#D5D1C2;
+    --ink:#16241B;--text:#2C3A30;--muted:#6C7A6F;--faint:#94A099;
+    --positive:#2F9E5E;--negative:#C0492F;--signal:#C9742B;
+    --on-primary:#F2F6EF;--on-deep:#CFE0D2;
+    --fd:'Schibsted Grotesk',ui-sans-serif,system-ui,sans-serif;
+    --fb:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+    --fm:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+    --r-card:14px;--r-ctl:9px;
+    --sh:0 1px 2px rgba(15,51,34,.04),0 10px 30px -18px rgba(15,51,34,.22);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#E7E4DB;color:var(--text);font-family:var(--fb);-webkit-font-smoothing:antialiased}
+  body{padding:40px 28px 70px}
+  .wrap{max-width:1280px;margin:0 auto}
+  .ph1{font-family:var(--fd);font-size:25px;font-weight:700;letter-spacing:-.025em;color:var(--ink)}
+  .psub{margin-top:7px;font-size:13.5px;color:#5c5c54;max-width:780px;line-height:1.55}
+  .stack{display:flex;flex-direction:column;gap:34px;margin-top:30px}
+  .th{display:flex;align-items:baseline;gap:9px;margin-bottom:11px}
+  .th .ix{font-family:var(--fm);font-size:11px;color:#8a8a80}
+  .th .nm{font-family:var(--fd);font-size:16px;font-weight:700;color:var(--ink)}
+  .th .tg{font-size:11.5px;color:#6f6f66}
+  .screen{border-radius:16px;overflow:hidden;border:1px solid var(--border-strong);box-shadow:var(--sh)}
+  .wm{font-family:var(--fd);font-weight:700;letter-spacing:-.03em}
+  .wm i{color:var(--signal);font-style:normal}
+  .shell{display:flex;min-height:560px;background:var(--paper);color:var(--ink)}
+  .sb{width:212px;background:var(--g-900);color:#9FBBA9;padding:20px 14px;display:flex;flex-direction:column;flex-shrink:0}
+  .sb .w{font-size:20px;padding:0 8px 22px;color:var(--on-primary)}
+  .nav{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:8px;font-size:13px;margin-bottom:2px;color:#9FBBA9}
+  .nav svg{width:16px;height:16px;flex-shrink:0;opacity:.85}
+  .nav.on{background:var(--g-700);color:var(--on-primary);font-weight:600}
+  .sb-ft{margin-top:auto;font-size:11px;color:#6E8A78;padding:14px 8px 0;border-top:1px solid rgba(255,255,255,.08)}
+  .main{flex:1;display:flex;flex-direction:column;min-width:0}
+  .tb{height:62px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:var(--surface)}
+  .crumb{font-size:13px;color:var(--muted)}
+  .crumb b{color:var(--ink);font-family:var(--fd);font-weight:600}
+  .tb-r{display:flex;align-items:center;gap:12px}
+  .rb{font-size:11px;font-family:var(--fm);background:var(--g-50);color:var(--g-700);border:1px solid var(--g-200);padding:4px 10px;border-radius:999px}
+  .av{width:32px;height:32px;border-radius:50%;background:var(--g-600);color:var(--on-primary);display:flex;align-items:center;justify-content:center;font-weight:600;font-family:var(--fd);font-size:12px}
+  .content{flex:1;padding:28px 26px;background:var(--paper);min-width:0}
+  .btn{height:42px;border-radius:var(--r-ctl);display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-family:var(--fd);font-size:13.5px;padding:0 18px;gap:8px;border:1px solid transparent;cursor:default}
+  .btn-pri{background:var(--g-600);color:var(--on-primary)}
+  .btn-sec{background:var(--surface);color:var(--ink);border-color:var(--border-strong)}
+  .btn-dng{background:var(--negative);color:#fff}
+  .btn-sm{height:34px;padding:0 13px;font-size:12px}
+  .lnk{font-size:12px;color:var(--signal);font-weight:500}
+  .lnk.neg{color:var(--negative)}
+  .pgh{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap}
+  .pgh h2{font-family:var(--fd);font-size:21px;font-weight:700;letter-spacing:-.02em;color:var(--ink)}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);padding:16px 18px}
+  .stat .l{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+  .stat .v{font-family:var(--fd);font-size:24px;font-weight:700;color:var(--ink);margin-top:7px;letter-spacing:-.02em}
+  .stat .v.warn{color:var(--negative)}
+  .filters{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+  .fi{height:38px;border:1px solid var(--border-strong);border-radius:var(--r-ctl);background:var(--surface);display:flex;align-items:center;padding:0 12px;font-size:12.5px;color:var(--faint);gap:8px}
+  .fi.sel{justify-content:space-between}.fi.sel::after{content:'▾';color:var(--muted)}
+  .tbl{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);overflow:hidden}
+  .tsc{overflow-x:auto}.tin{min-width:840px}
+  .trow{display:grid;grid-template-columns:1.8fr 1fr .8fr .9fr .9fr .9fr 1.1fr;align-items:center}
+  .thd{background:var(--surface-2);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
+  .thd>div{padding:12px 16px}
+  .trow.r{border-top:1px solid var(--border);font-size:13px}
+  .trow.r>div{padding:13px 16px}
+  .mono{font-family:var(--fm)}
+  .badge{font-size:10.5px;font-family:var(--fm);padding:3px 9px;border-radius:999px;border:1px solid}
+  .b-act{background:var(--g-50);color:var(--g-700);border-color:var(--g-200)}
+  .b-pend{background:var(--surface-2);color:var(--signal);border-color:var(--border)}
+  .b-susp{background:var(--surface-2);color:var(--negative);border-color:var(--border)}
+  .b-arch{background:var(--surface-2);color:var(--muted);border-color:var(--border)}
+  .acts{display:flex;gap:12px;align-items:center}
+  /* detail tabs */
+  .dh{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+  .dh h2{font-family:var(--fd);font-size:22px;font-weight:700;letter-spacing:-.02em;color:var(--ink)}
+  .dh .meta{font-size:13px;color:var(--muted);margin-top:4px}
+  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:22px;flex-wrap:wrap}
+  .tab{padding:10px 16px;font-size:13px;font-family:var(--fd);font-weight:600;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+  .tab.on{color:var(--ink);border-bottom-color:var(--g-600)}
+  .tab.def{color:var(--faint);font-weight:500}
+  .tabwrap{margin-bottom:26px}
+  .tablabel{font-family:var(--fm);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin:0 0 10px}
+  .ccards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+  .det{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);padding:20px;margin-bottom:18px}
+  .det .k{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+  .det .v{font-size:14px;color:var(--ink);margin-top:4px}
+  .panel2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+  .pcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);padding:20px}
+  .pcard h3{font-family:var(--fd);font-size:14px;font-weight:600;color:var(--ink);margin-bottom:14px}
+  .fl{display:block;margin-bottom:13px}
+  .fl span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:6px}
+  .fl .in{height:44px;border:1px solid var(--border-strong);border-radius:var(--r-ctl);background:var(--surface);display:flex;align-items:center;padding:0 12px;font-size:13px;color:var(--faint)}
+  .fl .in.sel{justify-content:space-between}.fl .in.sel::after{content:'▾';color:var(--muted)}
+  .qa{display:flex;gap:10px}.qa .in{flex:1}
+  .seg2{display:flex;border:1px solid var(--border-strong);border-radius:var(--r-ctl);overflow:hidden;flex-shrink:0}
+  .seg2 span{padding:0 16px;display:flex;align-items:center;font-size:12.5px;color:var(--muted);font-family:var(--fd);font-weight:600}
+  .seg2 span.on{background:var(--g-600);color:var(--on-primary)}
+  .seg2 span+span{border-left:1px solid var(--border-strong)}
+  .hint{font-size:11px;color:var(--faint);margin-top:6px}
+  .ledger{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);overflow:hidden}
+  .lrow{display:grid;grid-template-columns:1.8fr .9fr .9fr .8fr;align-items:center}
+  .lrow.h{background:var(--surface-2);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
+  .lrow.h>div{padding:11px 16px}
+  .lrow.r{border-top:1px solid var(--border);font-size:13px}
+  .lrow.r>div{padding:12px 16px}
+  .pos{color:var(--positive)} .neg{color:var(--negative)}
+  .ov{background:rgba(22,36,27,.30);padding:28px;display:flex;align-items:flex-start;justify-content:center}
+  .drw{background:var(--surface);width:420px;max-width:100%;border-radius:var(--r-card);padding:26px;box-shadow:var(--sh)}
+  .drw h3{font-family:var(--fd);font-size:19px;font-weight:700;color:var(--ink);margin-bottom:3px}
+  .drw .sub{font-size:12px;color:var(--muted);margin-bottom:18px}
+  .ftr{margin-top:34px;font-size:12.5px;color:#6f6f66;line-height:1.6}
+  .ftr code{font-family:var(--fm);background:var(--surface);padding:1px 6px;border-radius:4px;border:1px solid var(--border)}
+  @media(max-width:760px){.stats,.ccards,.panel2,.det{grid-template-columns:1fr}.sb{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="ph1">Tradon — Distributors &amp; Credits UI</div>
+  <div class="psub">Design-first reference, rendered inside the F0 AppShell. Field Green tokens only, responsive. Detail is a tabbed profile. Gap-check vs approved spec/backend noted at the bottom.</div>
+
+  <div class="stack">
+
+  <!-- 01 · DISTRIBUTORS LIST -->
+  <div>
+    <div class="th"><span class="ix">01</span><span class="nm">Distributors list</span><span class="tg">· stat cards + filterable table + approval row-actions · /app/distributors</span></div>
+    <div class="screen"><div class="shell">
+      <div class="sb">
+        <div class="wm w">Tradon<i>.</i></div>
+        <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</div>
+        <div class="nav on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="7" r="3.5"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/></svg>Distributors</div>
+        <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/></svg>Products</div>
+        <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.4 12h11"/></svg>Orders</div>
+        <div class="sb-ft">chi.tradon.app · Lagos · NGN</div>
+      </div>
+      <div class="main">
+        <div class="tb"><div class="crumb"><b>Chi Distribution Ltd</b> · Distributors</div>
+          <div class="tb-r"><span class="rb">role · Owner</span><div class="av">OA</div></div></div>
+        <div class="content">
+          <div class="pgh"><h2>Distributors</h2><div class="btn btn-pri">+ New distributor</div></div>
+          <div class="stats">
+            <div class="stat"><div class="l">Active</div><div class="v">41</div></div>
+            <div class="stat"><div class="l">Pending</div><div class="v">3</div></div>
+            <div class="stat"><div class="l">Total outstanding</div><div class="v">₦8.42M</div></div>
+            <div class="stat"><div class="l">Over-limit</div><div class="v warn">2</div></div>
+          </div>
+          <div class="filters">
+            <div class="fi" style="width:240px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="width:14px;height:14px;color:var(--muted)"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>Search business name…</div>
+            <div class="fi sel" style="width:150px">All statuses</div>
+          </div>
+          <div class="tbl"><div class="tsc"><div class="tin">
+            <div class="trow thd"><div>Business</div><div>Region</div><div>Status</div><div>Limit</div><div>Outstanding</div><div>Available</div><div>Actions</div></div>
+            <div class="trow r"><div style="color:var(--ink);font-weight:500">Hellofield Stores</div><div style="color:var(--muted)">Lagos</div><div><span class="badge b-act">active</span></div><div class="mono">₦500,000</div><div class="mono">₦455,000</div><div class="mono">₦45,000</div><div class="acts"><span class="lnk">View</span><span class="lnk">Suspend</span></div></div>
+            <div class="trow r"><div style="color:var(--ink);font-weight:500">Smatta Stores</div><div style="color:var(--muted)">Anambra</div><div><span class="badge b-act">active</span></div><div class="mono">₦300,000</div><div class="mono" style="color:var(--negative)">₦300,000</div><div class="mono">₦0</div><div class="acts"><span class="lnk">View</span><span class="lnk">Suspend</span></div></div>
+            <div class="trow r"><div style="color:var(--ink);font-weight:500">Verdant Retail</div><div style="color:var(--muted)">Oyo</div><div><span class="badge b-pend">pending</span></div><div class="mono">₦0</div><div class="mono">₦0</div><div class="mono">₦0</div><div class="acts"><span class="lnk">Approve</span><span class="lnk neg">Reject</span></div></div>
+            <div class="trow r"><div style="color:var(--ink);font-weight:500">Kano Wholesale</div><div style="color:var(--muted)">Kano</div><div><span class="badge b-susp">suspended</span></div><div class="mono">₦250,000</div><div class="mono">₦120,000</div><div class="mono">₦130,000</div><div class="acts"><span class="lnk">View</span><span class="lnk">Reactivate</span></div></div>
+          </div></div></div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 02 · DISTRIBUTOR DETAIL (tabbed) -->
+  <div>
+    <div class="th"><span class="ix">02</span><span class="nm">Distributor detail — tabbed profile</span><span class="tg">· Overview / Credit / Activity / Orders(deferred) · /app/distributors/[id]</span></div>
+    <div class="screen"><div class="shell">
+      <div class="sb">
+        <div class="wm w">Tradon<i>.</i></div>
+        <div class="nav on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="7" r="3.5"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/></svg>Distributors</div>
+        <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/></svg>Products</div>
+        <div class="sb-ft">chi.tradon.app · Lagos · NGN</div>
+      </div>
+      <div class="main">
+        <div class="tb"><div class="crumb"><b>Chi Distribution Ltd</b> · Distributors · Hellofield Stores</div>
+          <div class="tb-r"><span class="rb">role · Owner</span><div class="av">OA</div></div></div>
+        <div class="content">
+          <div class="dh">
+            <div><h2>Hellofield Stores</h2><div class="meta">Lagos · <span class="badge b-act mono">active</span></div></div>
+            <div class="acts"><span class="btn btn-sec btn-sm">Suspend</span><span class="btn btn-dng btn-sm">Archive</span></div>
+          </div>
+          <div class="tabs">
+            <div class="tab on">Overview</div><div class="tab">Credit</div>
+            <div class="tab">Activity</div><div class="tab def">Orders · soon</div>
+          </div>
+
+          <!-- Overview tab (active) -->
+          <div class="tabwrap">
+            <div class="ccards">
+              <div class="stat"><div class="l">Credit limit</div><div class="v">₦500,000</div></div>
+              <div class="stat"><div class="l">Outstanding</div><div class="v">₦455,000</div></div>
+              <div class="stat"><div class="l">Available</div><div class="v">₦45,000</div></div>
+            </div>
+            <div class="det">
+              <div><div class="k">Business name</div><div class="v">Hellofield Stores Ltd</div></div>
+              <div><div class="k">Contact</div><div class="v">Bisi Hello · hellofield@x.com</div></div>
+              <div><div class="k">Region</div><div class="v">Lagos</div></div>
+              <div><div class="k">Address</div><div class="v">14 Adeola Odeku St, Victoria Island</div></div>
+              <div><div class="k">Status</div><div class="v"><span class="badge b-act mono">active</span></div></div>
+              <div><div class="k">Onboarded</div><div class="v mono">2026-05-12</div></div>
+            </div>
+          </div>
+
+          <!-- Credit tab content -->
+          <div class="tabwrap">
+            <p class="tablabel">Credit tab</p>
+            <div class="panel2">
+              <div class="pcard">
+                <h3>Set credit limit</h3>
+                <label class="fl"><span>New limit (₦)</span><div class="in">600,000</div></label>
+                <div class="btn btn-pri" style="width:100%">Update limit</div>
+                <div class="hint">Audited; cannot be below current outstanding (₦455,000).</div>
+              </div>
+              <div class="pcard">
+                <h3>Record credit movement</h3>
+                <label class="fl"><span>Type</span><div class="in sel">Repayment</div></label>
+                <label class="fl"><span>Amount (₦)</span><div class="qa"><div class="in">50,000</div><div class="seg2"><span class="on">Add</span><span>Subtract</span></div></div></label>
+                <label class="fl"><span>Reason</span><div class="in">Bank transfer ref 88241</div></label>
+                <div class="btn btn-pri" style="width:100%">Record</div>
+                <div class="hint">Repayment reduces outstanding; Add/Subtract applies to Adjustment. Purchase draws come from Orders.</div>
+              </div>
+            </div>
+            <div class="ledger">
+              <div class="lrow h"><div>Movement</div><div>Amount</div><div>Actor</div><div>When</div></div>
+              <div class="lrow r"><div>repayment · Bank transfer 88241</div><div class="mono pos">−₦50,000</div><div class="mono" style="color:var(--muted)">u-7af3…(staff)</div><div class="mono" style="color:var(--faint)">2026-05-18</div></div>
+              <div class="lrow r"><div>purchase_draw · order #1841</div><div class="mono neg">+₦120,000</div><div class="mono" style="color:var(--muted)">system · order</div><div class="mono" style="color:var(--faint)">2026-05-17</div></div>
+              <div class="lrow r"><div>adjustment · opening balance</div><div class="mono neg">+₦385,000</div><div class="mono" style="color:var(--muted)">u-7af3…(staff)</div><div class="mono" style="color:var(--faint)">2026-05-12</div></div>
+            </div>
+          </div>
+
+          <!-- Activity tab content -->
+          <div class="tabwrap">
+            <p class="tablabel">Activity tab · from the F0 append-only audit log (who / old→new / when)</p>
+            <div class="ledger">
+              <div class="lrow h" style="grid-template-columns:1.4fr 1.4fr .9fr"><div>Action</div><div>Change</div><div>Actor · when</div></div>
+              <div class="lrow r" style="grid-template-columns:1.4fr 1.4fr .9fr"><div>credit_limit_changed</div><div class="mono">₦400,000 → ₦500,000</div><div class="mono" style="color:var(--faint)">u-7af3… · 2026-05-15</div></div>
+              <div class="lrow r" style="grid-template-columns:1.4fr 1.4fr .9fr"><div>status_changed</div><div class="mono">pending → active</div><div class="mono" style="color:var(--faint)">u-7af3… · 2026-05-12</div></div>
+            </div>
+            <div class="hint">Actor shown as staff user-id for now; friendly-name resolution is a flagged later follow-up.</div>
+          </div>
+
+          <!-- Orders tab (deferred placeholder) -->
+          <div class="tabwrap">
+            <p class="tablabel">Orders tab</p>
+            <div class="ledger" style="padding:34px 20px;text-align:center;color:var(--faint);font-size:13px">
+              Distributor order history arrives with the Orders sub-project. (Slot reserved — no rework later.)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 03 · CREATE DISTRIBUTOR -->
+  <div>
+    <div class="th"><span class="ix">03</span><span class="nm">New distributor</span><span class="tg">· drawer · creates pending distributor + shop_user shell</span></div>
+    <div class="screen"><div class="ov" style="min-height:460px">
+      <div class="drw">
+        <h3>New distributor</h3>
+        <div class="sub">Creates a pending distributor and a shop account shell (the distributor sets a password later, in the shop).</div>
+        <label class="fl"><span>Business name</span><div class="in">Hellofield Stores Ltd</div></label>
+        <label class="fl"><span>Contact name</span><div class="in">Bisi Hello</div></label>
+        <label class="fl"><span>Contact email</span><div class="in">hellofield@x.com</div></label>
+        <label class="fl"><span>Region</span><div class="in">Lagos</div></label>
+        <label class="fl"><span>Credit limit (₦)</span><div class="in">500,000</div></label>
+        <div class="btn btn-pri" style="width:100%">Create distributor</div>
+      </div>
+    </div></div>
+  </div>
+
+  </div>
+
+  <div class="ftr">
+    Source: <code>design/distributors/Tradon Distributors — UI.html</code> · Static, no external scripts · Field Green tokens · F0 AppShell reused.<br>
+    <b>Gap-check vs approved spec/backend</b> — fully covered, one small backend addition surfaced &amp; folded into the spec:
+    list + stat cards → <code>distributors</code> + <code>distributorStats</code>; status badges/actions → <code>setStatus</code> (built); Overview details/location → existing <code>distributors.region/address</code> + <code>shop_users</code> (no new backend); set-limit → <code>setCreditLimit</code> (T7); record repayment/adjustment + Add/Subtract → <code>record_credit_movement</code> (built) via <code>recordCreditMovement</code> (T8); Credit ledger <b>with actor column</b> → <code>listCreditMovements</code> (actor already stored); <b>Activity tab → new <code>listDistributorActivity</code> over the existing F0 <code>audit_log</code> (no new table)</b>; Orders tab = deferred placeholder (Orders sub-project). Purchase draws intentionally not a UI action.
+  </div>
+</div>
+</body>
+</html>
