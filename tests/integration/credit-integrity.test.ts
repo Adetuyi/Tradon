@@ -29,6 +29,8 @@ describe('record_credit_movement integrity', () => {
     )).rejects.toThrow();
     const [d]=await q<{outstanding:string}>(`select outstanding from distributors where id=$1`,[did]);
     expect(Number(d.outstanding)).toBe(400);
+    const [{n}]=await q<{n:number}>(`select count(*)::int n from credit_movements where distributor_id=$1`,[did]);
+    expect(n).toBe(1); // first 400 draw only; the rejected over-limit draw persisted no ledger row
   });
   it('rejects purchase_draw when not active; allows repayment when suspended', async () => {
     const { tid, did } = await seed('ci-c', 'suspended', 1000);
