@@ -90,6 +90,12 @@ const TRANSITIONS: Record<string, string[]> = {
   archived: [],
 };
 
+export async function getDistributorContact(tenantId: string, shopUserId: string):
+  Promise<{ email: string; full_name: string } | null> {
+  return withTenant(tenantId, async c => (await c.query(
+    `select email, full_name from shop_users where id=$1`, [shopUserId])).rows[0] ?? null);
+}
+
 export async function setStatus(tenantId: string, id: string,
   next: 'active'|'suspended'|'archived', actor: string): Promise<void> {
   await withTenant(tenantId, async c => {

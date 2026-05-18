@@ -7,6 +7,8 @@ import { requirePermission } from '@/lib/rbac/can';
 import { AppShell } from '@/components/ui/AppShell';
 import { listDistributors } from '@/lib/distributors/distributors';
 import { distributorStats } from '@/lib/distributors/stats';
+import { DistributorForm } from './DistributorForm';
+import { setStatusAction } from './actions';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,7 +32,10 @@ export default async function DistributorsPage({ searchParams }:
   return (
     <AppShell tenantName={tenant.slug} role={session.membership!.role}>
       <div className="w-full max-w-[1100px]">
-        <h1 className="font-display font-bold text-2xl text-ink mb-5">Distributors</h1>
+        <div className="flex items-center justify-between gap-4 mb-5">
+          <h1 className="font-display font-bold text-2xl text-ink">Distributors</h1>
+          <DistributorForm />
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
           {[['Active', String(stats.totalActive), false],
             ['Pending', String(stats.pendingCount), false],
@@ -60,17 +65,41 @@ export default async function DistributorsPage({ searchParams }:
                 : d.status==='suspended' ? 'bg-surface-2 text-negative border-hairline'
                 : 'bg-surface-2 text-muted border-hairline';
               return (
-              <Link key={d.id} href={`/app/distributors/${d.id}`}
-                className="grid grid-cols-[1.8fr_1fr_0.8fr_0.9fr_0.9fr_0.9fr]
-                border-t border-hairline text-[13px] items-center hover:bg-surface-2">
-                <div className="px-4 py-3 text-ink font-medium">{d.business_name}</div>
-                <div className="px-4 py-3 text-muted">{d.region ?? '—'}</div>
-                <div className="px-4 py-3"><span className={`font-mono text-[10.5px]
-                  px-2.5 py-1 rounded-full border ${badge}`}>{d.status}</span></div>
-                <div className="px-4 py-3 font-mono text-muted">{fmt(Number(d.credit_limit))}</div>
-                <div className="px-4 py-3 font-mono">{fmt(Number(d.outstanding))}</div>
-                <div className="px-4 py-3 font-mono">{fmt(avail)}</div>
-              </Link>
+              <div key={d.id} className="border-t border-hairline">
+                <Link href={`/app/distributors/${d.id}`}
+                  className="grid grid-cols-[1.8fr_1fr_0.8fr_0.9fr_0.9fr_0.9fr]
+                  text-[13px] items-center hover:bg-surface-2">
+                  <div className="px-4 py-3 text-ink font-medium">{d.business_name}</div>
+                  <div className="px-4 py-3 text-muted">{d.region ?? '—'}</div>
+                  <div className="px-4 py-3"><span className={`font-mono text-[10.5px]
+                    px-2.5 py-1 rounded-full border ${badge}`}>{d.status}</span></div>
+                  <div className="px-4 py-3 font-mono text-muted">{fmt(Number(d.credit_limit))}</div>
+                  <div className="px-4 py-3 font-mono">{fmt(Number(d.outstanding))}</div>
+                  <div className="px-4 py-3 font-mono">{fmt(avail)}</div>
+                </Link>
+                {d.status === 'pending' && (
+                  <div className="flex gap-2 px-4 pb-3">
+                    <form action={setStatusAction}>
+                      <input type="hidden" name="id" value={d.id} />
+                      <input type="hidden" name="status" value="active" />
+                      <button type="submit"
+                        className="h-7 px-3 text-xs rounded-ctl bg-primary text-on-primary
+                          font-display font-semibold border-transparent inline-flex items-center">
+                        Approve
+                      </button>
+                    </form>
+                    <form action={setStatusAction}>
+                      <input type="hidden" name="id" value={d.id} />
+                      <input type="hidden" name="status" value="archived" />
+                      <button type="submit"
+                        className="h-7 px-3 text-xs rounded-ctl bg-negative text-white
+                          font-display font-semibold border-transparent inline-flex items-center">
+                        Reject
+                      </button>
+                    </form>
+                  </div>
+                )}
+              </div>
             );})}
           </div></div>
         </div>
