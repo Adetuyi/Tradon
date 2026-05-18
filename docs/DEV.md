@@ -33,3 +33,15 @@
 - `'use server'` files export only async functions; product/category permission key
   constants live in `src/app/(tenant)/app/products/permissions.ts` (Next 16/Turbopack
   constraint).
+- Distributors: credit changes ONLY via `record_credit_movement` (a trigger blocks
+  direct `credit_movements` writes by the app `anon` role); `distributors.outstanding`
+  is DB-maintained, cannot drift, and is bounded `0 ≤ outstanding ≤ credit_limit`;
+  `purchase_draw` requires `status='active'`. `credit_movements` is append-only
+  (UPDATE/DELETE no-op, TRUNCATE revoked from app roles), RLS-scoped, FK-free.
+- `credit_limit` changes are recorded via F0 `audit_log` (writeAudit), not the ledger,
+  may not be set below current `outstanding`. `listDistributorActivity` reads that
+  audit_log per distributor (Activity tab); actor is the staff user-id (friendly-name
+  resolution is a later follow-up).
+- Distributors archive (status), never hard-delete; lifecycle pending→active→
+  suspended/archived enforced by `setStatus`; activating sets shop_users.status='distributor'.
+- Tenant-created distributors get a shop_users shell with sentinel password_hash '!shell'.
