@@ -1,4 +1,5 @@
 import { withTenant } from '@/lib/db/withTenant';
+import { writeAudit } from '@/lib/compliance/audit';
 
 export const SHELL_PASSWORD_HASH = '!shell';
 
@@ -63,4 +64,31 @@ export async function getDistributor(tenantId: string, id: string): Promise<Dist
   return withTenant(tenantId, async c => (await c.query(
     `select id,shop_user_id,business_name,region,address,credit_limit,outstanding,status
      from distributors where id=$1`, [id])).rows[0] ?? null);
+}
+
+const TRANSITIONS: Record<string, string[]> = {
+  pending: ['active', 'archived'],
+  active: ['suspended', 'archived'],
+  suspended: ['active', 'archived'],
+  archived: [],
+};
+
+export async function setStatus(tenantId: string, id: string,
+  next: 'active'|'suspended'|'archived', actor: string): Promise<void> {
+  await withTenant(tenantId, async c => {
+    const cur = (await c.query(
+      `select status, shop_user_id from distributors where id=$1`, [id])).rows[0];
+    if (!cur) throw new Error('distributor not found');
+    if (!TRANSITIONS[cur.status]?.includes(next)) {
+      throw new Error(`invalid transition ${cur.status} -> ${next}`);
+    }
+    await c.query(`update distributors set status=$2, updated_at=now() where id=$1`,
+      [id, next]);
+    if (next === 'active') {
+      await c.query(`update shop_users set status='distributor' where id=$1`,
+        [cur.shop_user_id]);
+    }
+  });
+  await writeAudit({ tenantId, actor, action: 'distributor.status_changed',
+    target: id, meta: { to: next } });
 }
