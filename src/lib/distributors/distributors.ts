@@ -66,6 +66,23 @@ export async function getDistributor(tenantId: string, id: string): Promise<Dist
      from distributors where id=$1`, [id])).rows[0] ?? null);
 }
 
+export async function setCreditLimit(tenantId: string, id: string,
+  newLimit: number, actor: string): Promise<void> {
+  const old = await withTenant(tenantId, async c => {
+    const r = (await c.query(
+      `select credit_limit, outstanding from distributors where id=$1`, [id])).rows[0];
+    if (!r) throw new Error('distributor not found');
+    if (Number(newLimit) < Number(r.outstanding)) {
+      throw new Error(`new limit ${newLimit} is below current outstanding ${r.outstanding}`);
+    }
+    await c.query(`update distributors set credit_limit=$2, updated_at=now() where id=$1`,
+      [id, newLimit]);
+    return Number(r.credit_limit);
+  });
+  await writeAudit({ tenantId, actor, action: 'distributor.credit_limit_changed',
+    target: id, meta: { old, new: Number(newLimit) } });
+}
+
 const TRANSITIONS: Record<string, string[]> = {
   pending: ['active', 'archived'],
   active: ['suspended', 'archived'],
