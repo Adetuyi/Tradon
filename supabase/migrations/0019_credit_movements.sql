@@ -1,7 +1,7 @@
 create table credit_movements (
   id uuid primary key default gen_random_uuid(),
   tenant_id uuid not null,
-  distributor_id uuid not null references distributors(id),
+  distributor_id uuid not null,
   type text not null check (type in ('purchase_draw','repayment','adjustment')),
   delta numeric(14,2) not null check (delta <> 0),
   reason text,
