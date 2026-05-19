@@ -1,5 +1,6 @@
 import { supabaseServer } from '@/lib/supabase/server';
 import { supabaseAdmin } from '@/lib/supabase/admin';
+import { isPreviewMode, PREVIEW_ACTOR, PREVIEW_EMAIL, PREVIEW_ROLE } from '@/lib/preview';
 
 export type StaffSession = {
   userId: string; email: string;
@@ -7,6 +8,14 @@ export type StaffSession = {
 };
 
 export async function getStaffSession(tenantId: string | null): Promise<StaffSession | null> {
+  // TEMPORARY (preview mode): synthetic Owner session, no real login.
+  // See src/lib/preview.ts.
+  if (isPreviewMode()) {
+    return {
+      userId: PREVIEW_ACTOR, email: PREVIEW_EMAIL,
+      membership: { tenantId, role: PREVIEW_ROLE, isPlatform: false },
+    };
+  }
   const sb = await supabaseServer();
   const { data: { user } } = await sb.auth.getUser();
   if (!user) return null;

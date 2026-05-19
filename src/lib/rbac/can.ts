@@ -21,6 +21,10 @@ export function can(p: Principal, permission: string): boolean {
  * at module evaluation time.
  */
 export async function requirePermission(p: Principal, permission: string): Promise<void> {
+  // TEMPORARY (preview mode): skip the RBAC gate. See src/lib/preview.ts.
+  // Reads process.env only — keeps `can` vitest-safe (no next/navigation).
+  const { isPreviewMode } = await import('@/lib/preview');
+  if (isPreviewMode()) return;
   if (!can(p, permission)) {
     const { redirect } = await import('next/navigation');
     redirect('/forbidden');

@@ -45,3 +45,14 @@
 - Distributors archive (status), never hard-delete; lifecycle pending→active→
   suspended/archived enforced by `setStatus`; activating sets shop_users.status='distributor'.
 - Tenant-created distributors get a shop_users shell with sentinel password_hash '!shell'.
+
+## ⚠️ Preview mode (TEMPORARY)
+
+- `TRADON_PREVIEW_MODE=1` bypasses auth/RBAC/tenant resolution app-wide so anyone
+  can view (and, since the RBAC gate is shared with server actions, mutate) the
+  app without signing in. Binds to the **first active tenant** for data.
+- **Default OFF** — unset/!= "1" leaves behaviour byte-for-byte unchanged (full
+  suite stays 87/87). A red banner shows on every page while it's on.
+- Single source: `src/lib/preview.ts` (its header lists the exact removal steps —
+  3 guarded early-returns + the layout banner). On a throwaway branch
+  `feat/preview-mode`; do NOT merge to a real deployment.
