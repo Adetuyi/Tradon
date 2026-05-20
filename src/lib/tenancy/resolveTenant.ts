@@ -1,16 +1,18 @@
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { parseHost } from '@/lib/host';
-import { isPreviewMode } from '@/lib/preview';
+import { isPreviewMode, PREVIEW_DUMMY_TENANT } from '@/lib/preview';
 
 export type TenantCtx = { id: string; slug: string; status: string };
 
-/** TEMPORARY (preview mode): first active tenant, used when no tenant
- *  could be resolved from the host. See src/lib/preview.ts. */
-async function previewTenant(): Promise<TenantCtx | null> {
+/** TEMPORARY (preview mode): the first active tenant in the DB, or a
+ *  synthetic dummy tenant when the DB has none yet. Never returns null,
+ *  so preview-mode pages always have a tenant context to bind to and
+ *  render their empty-state UI instead of 404'ing. See src/lib/preview.ts. */
+async function previewTenant(): Promise<TenantCtx> {
   const { data } = await supabaseAdmin.from('tenants')
     .select('id,slug,status').eq('status', 'active')
     .order('created_at', { ascending: true }).limit(1).maybeSingle();
-  return (data as TenantCtx) ?? null;
+  return (data as TenantCtx) ?? PREVIEW_DUMMY_TENANT;
 }
 
 export async function resolveTenant(rawHost: string): Promise<TenantCtx | null> {
