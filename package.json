@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "check:rls": "tsx scripts/check-rls.ts"
+    "check:rls": "tsx scripts/check-rls.ts",
+    "seed:cloud": "tsx --env-file=.env.local scripts/seed-cloud.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1048.0",
